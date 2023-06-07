@@ -3,7 +3,7 @@ const path = require('node:path');
 const fs = require('node:fs');
 const { applyToEachCommand } = require('./utils');
 const { Client, GatewayIntentBits, Collection } = require('discord.js');
-const { Player } = require('discord-player');
+// const { Player } = require('discord-player');
 
 const client = new Client({
     intents: [
@@ -18,7 +18,7 @@ Init();
 function Init() {
     InitCommands();
     InitEvents();
-    InitPlayer();
+    // InitPlayer();
 
     // Log in to Discord with app's token
     client.login(process.env.DISCORD_TOKEN);
@@ -47,19 +47,19 @@ function InitEvents() {
     }
 }
 
-async function InitPlayer() {
-    client.player = new Player(client, {
-        ytdlOptions: {
-            quality: "highestaudio",
-            highWaterMark: 1 << 25
-        }
-    })
+// async function InitPlayer() {
+//     client.player = new Player(client, {
+//         ytdlOptions: {
+//             quality: "highestaudio",
+//             highWaterMark: 1 << 25
+//         }
+//     })
 
-    await client.player.extractors.loadDefault();
+//     await client.player.extractors.loadDefault();
 
-    // this event is emitted whenever discord-player starts to play a track
-    client.player.events.on('playerStart', (queue, track) => {
-        // we will later define queue.metadata object while creating the queue
-        // queue.metadata.channel.send(`Started playing **${track.title}**!`);
-    });
-}
+//     // this event is emitted whenever discord-player starts to play a track
+//     client.player.events.on('playerStart', (queue, track) => {
+//         // we will later define queue.metadata object while creating the queue
+//         // queue.metadata.channel.send(`Started playing **${track.title}**!`);
+//     });
+// }
