@@ -3,9 +3,9 @@ const { Events } = require('discord.js');
 module.exports = {
     name: Events.InteractionCreate,
     async execute(interaction) {
-        if (!interaction.isChatInputCommand()) 
+        if (!interaction.isChatInputCommand())
         {
-            return;            
+            return;
         }
 
         const command = interaction.client.commands.get(interaction.commandName);
@@ -16,7 +16,7 @@ module.exports = {
         }
 
         try {
-            await command.execute(interaction);
+            await command.execute({ client: interaction.client, interaction });
         } catch (error) {
             console.error(error);
             if (interaction.replied || interaction.deferred) {

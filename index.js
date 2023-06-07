@@ -1,33 +1,39 @@
-const dotenv = require('dotenv');
+require('dotenv').config();
 const path = require('node:path');
 const fs = require('node:fs');
 const { applyToEachCommand } = require('./utils');
-const { Client, Events, GatewayIntentBits, Collection } = require('discord.js');
+const { Client, GatewayIntentBits, Collection } = require('discord.js');
+const { Player } = require('discord-player');
 
-dotenv.config();
+const client = new Client({
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.GuildVoiceStates
+    ]
+});
 
 Init();
 
 function Init() {
-    const client = new Client({ intents: [GatewayIntentBits.Guilds] });
-
-    InitCommands(client);
-    InitEvents(client);
+    InitCommands();
+    InitEvents();
+    InitPlayer();
 
     // Log in to Discord with app's token
     client.login(process.env.DISCORD_TOKEN);
 }
 
-function InitCommands(client) {
+function InitCommands() {
     client.commands = new Collection();
     // Set a new item in the Collection with the key as the command name and the value as the exported module
     applyToEachCommand(command => client.commands.set(command.data.name, command));
 }
 
-function InitEvents(client) {
+function InitEvents() {
     const eventsPath = path.join(__dirname, 'events');
     const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
-    
+
     for (const file of eventFiles) {
         const filePath = path.join(eventsPath, file);
         const event = require(filePath);
@@ -39,4 +45,21 @@ function InitEvents(client) {
 
         client.on(event.name, (...args) => event.execute(...args));
     }
+}
+
+async function InitPlayer() {
+    client.player = new Player(client, {
+        ytdlOptions: {
+            quality: "highestaudio",
+            highWaterMark: 1 << 25
+        }
+    })
+
+    await client.player.extractors.loadDefault();
+
+    // this event is emitted whenever discord-player starts to play a track
+    client.player.events.on('playerStart', (queue, track) => {
+        // we will later define queue.metadata object while creating the queue
+        // queue.metadata.channel.send(`Started playing **${track.title}**!`);
+    });
 }
