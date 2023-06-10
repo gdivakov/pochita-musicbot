@@ -4,6 +4,8 @@ const fs = require('node:fs');
 const { applyToEachCommand } = require('./utils');
 const { Client, GatewayIntentBits, Collection } = require('discord.js');
 const { Player } = require('discord-player');
+const { VoiceConnectionStatus } = require('@discordjs/voice');
+
 
 const client = new Client({
     intents: [
@@ -61,5 +63,13 @@ async function InitPlayer() {
     client.player.events.on('playerStart', (queue, track) => {
         // we will later define queue.metadata object while creating the queue
         // queue.metadata.channel.send(`Started playing **${track.title}**!`);
+    });
+
+    client.player.events.on('connection', (queue) => {
+        queue.dispatcher.voiceConnection.on('stateChange', (oldState, newState) => {
+            if (oldState.status === VoiceConnectionStatus.Ready && newState.status === VoiceConnectionStatus.Connecting) {
+                queue.dispatcher.voiceConnection.configureNetworking();
+            }
+        });
     });
 }
