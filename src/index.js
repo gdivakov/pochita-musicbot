@@ -50,19 +50,16 @@ function InitEvents() {
 }
 
 async function InitPlayer() {
-    client.player = new Player(client, {
-        ytdlOptions: {
-            quality: "highestaudio",
-            highWaterMark: 1 << 25
-        }
-    })
+    // this is the entrypoint for discord-player based application
+    client.player = new Player(client);
 
+    // This method will load all the extractors from the @discord-player/extractor package
     await client.player.extractors.loadDefault();
 
     // this event is emitted whenever discord-player starts to play a track
     client.player.events.on('playerStart', (queue, track) => {
         // we will later define queue.metadata object while creating the queue
-        // queue.metadata.channel.send(`Started playing **${track.title}**!`);
+        queue.metadata.channel.send(`Started playing **${track.title}**!`);
     });
 
     client.player.events.on('connection', (queue) => {
