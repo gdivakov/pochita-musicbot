@@ -5,8 +5,7 @@
   "main": "src/index",
   "scripts": {
     "start": "node src/index",
-    "reload-commands-dev": "node src/scripts/reload-commands-dev",
-    "reload-commands-prod": "node src/scripts/reload-commands-prod",
+    "reload-commands": "node src/scripts/reload-commands",
     "db": "node src/scripts/dbconnect"
 
   },

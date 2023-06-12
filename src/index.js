@@ -5,7 +5,7 @@ const { applyToEachCommand } = require('./utils');
 const { Client, GatewayIntentBits, Collection } = require('discord.js');
 const { Player } = require('discord-player');
 const { VoiceConnectionStatus } = require('@discordjs/voice');
-
+const { generateDependencyReport } = require('@discordjs/voice');
 
 const client = new Client({
     intents: [
@@ -25,6 +25,7 @@ function Init() {
     InitCommands();
     InitEvents();
     InitPlayer();
+    InitLogging();
 
     // Log in to Discord with app's token
     client.login(process.env.DISCORD_TOKEN);
@@ -75,26 +76,38 @@ async function InitPlayer() {
     });
 }
 
-client.player.events.on('error', (queue, error) => {
-    // Emitted when the player queue encounters error
-    console.log(`General player error event: ${error.message}`);
-    console.log(error);
-});
- 
-client.player.events.on('playerError', (queue, error) => {
-    // Emitted when the audio player errors while streaming audio track
-    console.log(`Player error event: ${error.message}`);
-    console.log(error);
-});
+function InitLogging()
+{
+    if (process.env.IS_LOGGING_ENABLED !== 'TRUE')
+    {
+        return;
+    }
 
-client.player.on('debug', async (message) => {
-    // Emitted when the player sends debug info
-    // Useful for seeing what dependencies, extractors, etc are loaded
-    console.log(`General player debug event: ${message}`);
-});
- 
-client.player.events.on('debug', async (queue, message) => {
-    // Emitted when the player queue sends debug info
-    // Useful for seeing what state the current queue is at
-    console.log(`Player debug event: ${message}`);
-});
+    // Check installed dependencies for
+    // @discordjs/voice and discord-player
+    console.log(generateDependencyReport());
+
+    client.player.events.on('error', (queue, error) => {
+        // Emitted when the player queue encounters error
+        console.log(`General player error event: ${error.message}`);
+        console.log(error);
+    });
+
+    client.player.events.on('playerError', (queue, error) => {
+        // Emitted when the audio player errors while streaming audio track
+        console.log(`Player error event: ${error.message}`);
+        console.log(error);
+    });
+
+    client.player.on('debug', async (message) => {
+        // Emitted when the player sends debug info
+        // Useful for seeing what dependencies, extractors, etc are loaded
+        console.log(`General player debug event: ${message}`);
+    });
+
+    client.player.events.on('debug', async (queue, message) => {
+        // Emitted when the player queue sends debug info
+        // Useful for seeing what state the current queue is at
+        console.log(`Player debug event: ${message}`);
+    });
+}

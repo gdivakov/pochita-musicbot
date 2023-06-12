@@ -31,8 +31,4 @@ const validateCommand = (command, filePath) =>
   }
 }
 
-const { generateDependencyReport } = require('@discordjs/voice');
-
-console.log(generateDependencyReport());
-
 module.exports = { applyToEachCommand };
