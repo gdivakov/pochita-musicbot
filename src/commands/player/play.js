@@ -4,13 +4,7 @@ const { joinVoiceChannel, getVoiceConnection } = require("@discordjs/voice")
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('play')
-        .setDescription('Join voice channel')
-        .addStringOption(option =>
-            option.setName('query')
-                .setDescription('Song Link')
-                .setAutocomplete(true)),
-    async execute({ client, interaction }) {
-        // join voice channel
+
         const voiceChannelId = interaction.member.voice.channel.id;
         const voiceConnection = joinVoiceChannel({
             channelId: voiceChannelId,
@@ -18,7 +12,7 @@ module.exports = {
             adapterCreator: interaction.guild.voiceAdapterCreator
         });
 
-        // const connection = getVoiceConnection(voiceChannelId);        
+        // const connection = getVoiceConnection(voiceChannelId);
 
         // await interaction.reply('Joined!');
 
@@ -35,16 +29,5 @@ module.exports = {
 
         try {
             const { track } = await client.player.play(channel, query, {
-                nodeOptions: {
-                    // nodeOptions are the options for guild node (aka your queue in simple word)
-                    metadata: interaction // we can access this metadata object using queue.metadata later on
-                }
-            });
 
-            return interaction.followUp(`**${track.title}** enqueued!`);
-        } catch (e) {
-            // let's return error if something failed
-            return interaction.followUp(`Something went wrong: ${e}`);
-        }
-    },
 }
