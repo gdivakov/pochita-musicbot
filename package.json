@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node src/index",
     "reload-commands-dev": "node src/scripts/reload-commands-dev",
-    "reload-commands-prod": "node src/scripts/reload-commands-prod"
+    "reload-commands-prod": "node src/scripts/reload-commands-prod",
+    "db": "node src/scripts/dbconnect"
+
   },
   "author": "gdivakov",
   "license": "ISC",
@@ -18,6 +20,7 @@
     "discord.js": "^14.11.0",
     "dotenv": "^16.1.4",
     "libsodium-wrappers": "^0.7.11",
+    "mongoose": "^7.2.3",
     "opusscript": "^0.0.8",
     "tweetnacl": "^1.0.3",
     "ytdl-core": "^4.11.4"
