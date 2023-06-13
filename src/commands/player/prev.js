@@ -5,7 +5,7 @@ const { useHistory } = require("discord-player");
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("prev")
-        .setDescription("Goin back a track"),
+        .setDescription("Previous track"),
     async execute({ client, interaction }) {
         const history = useHistory(interaction.guild.id);
         await history.previous();
