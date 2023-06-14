@@ -6,9 +6,14 @@ module.exports = {
         .setName("next")
         .setDescription("Next track"),
     async execute({ client, interaction }) {
-        const queue = useQueue(interaction.guild.id);
-        queue.node.skip();
+        try {
+            const queue = useQueue(interaction.guild.id);
+            queue.node.skip();
 
-        await interaction.reply('Start playing next track !')
+            await interaction.reply('Start playing next track !')
+        }catch(e) {
+            return interaction.reply('next error', e)
+        }
+        
     }
 }

@@ -6,9 +6,14 @@ module.exports = {
         .setName("loop")
         .setDescription("Loop current track"),
     async execute({ client, interaction }) {
-        const queue = useQueue(interaction.guild.id);
-        queue.setRepeatMode(1);
+        try {
+            const queue = useQueue(interaction.guild.id);
+            queue.setRepeatMode(1);
 
-        await interaction.reply('Track was looped !')
+            await interaction.reply('Track was looped !')
+        } catch(e) {
+            interaction.reply('loop error :', e);
+        }
+
     }
 }

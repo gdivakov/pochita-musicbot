@@ -7,9 +7,14 @@ module.exports = {
         .setName("pause")
         .setDescription("Pause a track"),
     async execute({ client, interaction }) {
-        const queue = useQueue(interaction.guild.id);
-        queue.node.setPaused(true);
+        try {
+            const queue = useQueue(interaction.guild.id);
+            queue.node.setPaused(true);
 
-        await interaction.reply("Track was paused");
+            await interaction.reply("Track was paused");
+        } catch (e) {
+            interaction.reply("pause error ", e)
+        }
+
     }
 }

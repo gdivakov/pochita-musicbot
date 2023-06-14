@@ -4,11 +4,16 @@ const { useQueue } = require("discord-player");
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("unloop")
-        .setDescription("Un loop current track"),
+        .setDescription("Unloop current track"),
     async execute({ client, interaction }) {
-        const queue = useQueue(interaction.guild.id);
-        queue.setRepeatMode(0);
-        
-        await interaction.reply('Track was unlooped !')
+        try {
+            const queue = useQueue(interaction.guild.id);
+            queue.setRepeatMode(0);
+
+            await interaction.reply('Track was unlooped !')
+        } catch (e) {
+            return interaction.reply("unloop error ", e)
+        }
+
     }
 }
