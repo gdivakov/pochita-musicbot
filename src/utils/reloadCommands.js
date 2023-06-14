@@ -14,7 +14,7 @@ async function reloadCommands(route, onSuccess, onError) {
     });
 
     // Update specific commands
-    commands = commands.filter(command => COMMANDS_TO_UPDATE.includes(command.name));
+    // commands = commands.filter(command => COMMANDS_TO_UPDATE.includes(command.name));
 
     console.log('commands to update', commands);
 
