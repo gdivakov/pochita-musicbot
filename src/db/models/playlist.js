@@ -7,4 +7,4 @@ const playlistSchema = new mongoose.Schema({
   length: Number,
 });
 
-module.exports = Playlist;
+module.exports = mongoose.model('Playlist', playlistSchema);
