@@ -28,8 +28,6 @@ module.exports = {
 
         // const connection = getVoiceConnection(voiceChannelId);
 
-        // await interaction.reply('Joined!');
-
         const channel = interaction.member.voice.channel;
 
         if (!channel) {

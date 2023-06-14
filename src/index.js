@@ -64,7 +64,7 @@ async function InitPlayer() {
     // this event is emitted whenever discord-player starts to play a track
     client.player.events.on('playerStart', (queue, track) => {
         // we will later define queue.metadata object while creating the queue
-        queue.metadata.channel.send(`Started playing **${track.title}**!`);
+        queue.metadata.channel.send(`Now playing **${track.title}**!`);
     });
 
     client.player.events.on('connection', (queue) => {
