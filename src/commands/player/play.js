@@ -61,6 +61,7 @@ module.exports = {
 
             const { track } = await client.player.play(channel, trackURL, {
                 nodeOptions: {
+                    leaveOnEnd: false,
                     // nodeOptions are the options for guild node (aka your queue in simple word)
                     metadata: interaction // we can access this metadata object using queue.metadata later on
                 }
