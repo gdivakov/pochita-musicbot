@@ -6,15 +6,11 @@ const Track = require('../../db/models/track');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('play')
-        .setDescription('Join voice channel')
-        // .addStringOption(option =>
-        //     option.setName('query')
-        //         .setDescription('Song Link')
-        //         .setAutocomplete(true)),
+        .setDescription('Play')
         .addSubcommand(subcommand =>
             subcommand
                 .setName('all')
-                .setDescription('Play all tracks'))
+                .setDescription('Play all tracks')) // Temp
         .addSubcommand(subcommand =>
             subcommand
                 .setName('track')
@@ -40,8 +36,8 @@ module.exports = {
             return interaction.reply('You are not connected to a voice channel!'); // make sure we have a voice channel
         }
 
-        const trackURL = interaction.options.getString('track'); // we need input/query to play
-        console.log("-------------track", trackURL);
+        const trackURL = interaction.options.getString('url'); // we need input/query to play
+        // console.log("-------------track", trackURL);
         // let's defer the interaction as things can take time to process
         await interaction.deferReply();
 
