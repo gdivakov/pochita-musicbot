@@ -1,7 +1,6 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { useQueue } = require("discord-player");
 
-
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("resume")
@@ -11,7 +10,7 @@ module.exports = {
             const queue = useQueue(interaction.guild.id);
             queue.node.setPaused(false);
 
-            await interaction.reply("Track was resumed");
+            await interaction.reply("Track was resumed!");
 
         } catch (e) {
             return interaction.reply("resume error ", e)
