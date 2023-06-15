@@ -35,13 +35,13 @@ module.exports = {
             // In case we have queue ahead
             if (queue.tracks.data.length) {
                 // move track to start position
-                queue.node.move(queue.tracks.data.length-1, 0);
+                queue.node.move(queue.tracks.data.length - 1, 0);
 
                 // and play it
                 queue.node.skip();
             }
 
-            return interaction.followUp(`Successfully started **${track.title}**`);
+            return interaction.followUp(`Started a new track`);
 
         } catch (e) {
             return interaction.followUp(`Something went wrong: ${e}`);

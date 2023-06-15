@@ -6,6 +6,8 @@ const { Client, GatewayIntentBits, Collection } = require('discord.js');
 const { Player } = require('discord-player');
 const { VoiceConnectionStatus } = require('@discordjs/voice');
 const { generateDependencyReport } = require('@discordjs/voice');
+const { EmbedBuilder } = require('discord.js');
+const { prepareSongTitle } = require('./utils');
 
 const client = new Client({
     intents: [
@@ -55,16 +57,35 @@ function InitEvents() {
 }
 
 async function InitPlayer() {
-    // this is the entrypoint for discord-player based application
     client.player = new Player(client);
 
-    // This method will load all the extractors from the @discord-player/extractor package
     await client.player.extractors.loadDefault();
 
-    // this event is emitted whenever discord-player starts to play a track
     client.player.events.on('playerStart', (queue, track) => {
-        // we will later define queue.metadata object while creating the queue
-        queue.metadata.channel.send(`Now playing **${track.title}**!`);
+        // console.log(track);
+
+        const embed = new EmbedBuilder()
+            .setTitle(prepareSongTitle(track))
+            .setURL(track.url)
+            .setThumbnail(track.thumbnail)
+            .setColor('Yellow')
+            //
+            .setColor(0x0099FF)
+            .setAuthor({ name: 'Some name', iconURL: 'https://i.imgur.com/AfFp7pu.png', url: 'https://discord.js.org' })
+            .setDescription('Some description here')
+            .setThumbnail('https://i.imgur.com/AfFp7pu.png')
+            .addFields(
+                { name: 'Regular field title', value: 'Some value here' },
+                { name: '\u200B', value: '\u200B' },
+                { name: 'Inline field title', value: 'Some value here', inline: true },
+                { name: 'Inline field title', value: 'Some value here', inline: true },
+            )
+            .addFields({ name: 'Inline field title', value: 'Some value here', inline: true })
+            .setImage('https://i.imgur.com/AfFp7pu.png')
+            .setTimestamp()
+            .setFooter({ text: 'Some footer text here', iconURL: 'https://i.imgur.com/AfFp7pu.png' });            ;
+
+        queue.metadata.channel.send({ embeds: [embed] });
     });
 
     client.player.events.on('connection', (queue) => {
@@ -76,10 +97,8 @@ async function InitPlayer() {
     });
 }
 
-function InitLogging()
-{
-    if (process.env.IS_LOGGING_ENABLED !== 'TRUE')
-    {
+function InitLogging() {
+    if (process.env.IS_LOGGING_ENABLED !== 'TRUE') {
         return;
     }
 
