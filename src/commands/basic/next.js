@@ -8,6 +8,10 @@ module.exports = {
     async execute({ client, interaction }) {
         try {
             const queue = useQueue(interaction.guild.id);
+            if(queue) {
+                console.log("one")
+            }
+            console.log('one')
             queue.node.skip();
 
             await interaction.reply('Start playing next track')
