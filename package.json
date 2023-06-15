@@ -5,9 +5,9 @@
   "main": "src/index",
   "scripts": {
     "start": "node src/index",
+    "start watching": "nodemon",
     "reload-commands": "node src/scripts/reload-commands",
-    "db": "node src/scripts/dbconnect"
-
+    "db-test": "node src/scripts/dbconnect"
   },
   "author": "gdivakov",
   "license": "ISC",
