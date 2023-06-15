@@ -3,7 +3,9 @@ const { applyToEachCommand } = require('.');
 
 const COMMANDS_TO_UPDATE =
 [
-    'play'
+    'play',
+    'play-all',
+    'list'
 ];
 
 async function reloadCommands(route, onSuccess, onError) {
