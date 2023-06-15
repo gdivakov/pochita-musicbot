@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
-const Playlist = require('../../db/models/playlist');
-const connectToDB = require('../../scripts/dbconnect');
+const Playlist = require('@db/models/playlist');
+const connectToDB = require('@scripts/dbconnect');
 
 module.exports = {
 	data: new SlashCommandBuilder()

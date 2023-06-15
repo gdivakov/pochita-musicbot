@@ -1,6 +1,6 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const { TRACK_TITLE_MAX_LENGTH, TRACK_AUTHOR_MAX_LENGTH } = require('../consts');
+const { TRACK_TITLE_MAX_LENGTH, TRACK_AUTHOR_MAX_LENGTH } = require('@consts');
 
 const applyToEachCommand = (callback) => {
   const foldersPath = path.join(__dirname, '../commands');

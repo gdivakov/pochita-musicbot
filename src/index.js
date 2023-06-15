@@ -1,13 +1,12 @@
+require('module-alias/register')
 require('dotenv').config();
+
 const path = require('node:path');
 const fs = require('node:fs');
-const { applyToEachCommand } = require('./utils');
-const { Client, GatewayIntentBits, Collection } = require('discord.js');
-const { Player } = require('discord-player');
-const { VoiceConnectionStatus } = require('@discordjs/voice');
+const { Client, GatewayIntentBits, Collection, EmbedBuilder } = require('discord.js');
 const { generateDependencyReport } = require('@discordjs/voice');
-const { EmbedBuilder } = require('discord.js');
-const { prepareSongTitle } = require('./utils');
+const { Player } = require('discord-player');
+const { applyToEachCommand, prepareSongTitle } = require('@utils');
 
 const client = new Client({
     intents: [

@@ -1,5 +1,5 @@
 const { REST } = require('discord.js');
-const { applyToEachCommand } = require('.');
+const { applyToEachCommand } = require('@utils');
 
 const COMMANDS_TO_UPDATE =
 [

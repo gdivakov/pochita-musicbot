@@ -19,6 +19,7 @@
     "discord.js": "^14.11.0",
     "dotenv": "^16.1.4",
     "libsodium-wrappers": "^0.7.11",
+    "module-alias": "^2.2.3",
     "mongoose": "^7.2.3",
     "opusscript": "^0.0.8",
     "tweetnacl": "^1.0.3",
@@ -26,5 +27,13 @@
   },
   "devDependencies": {
     "eslint": "^8.42.0"
+  },
+  "_moduleAliases": {
+    "@commands": "src/commands",
+    "@consts": "src/consts",
+    "@db": "src/db",
+    "@events": "src/events",
+    "@scripts": "src/scripts",
+    "@utils": "src/utils"
   }
 }

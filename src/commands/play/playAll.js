@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require("@discordjs/builders")
 const { joinVoiceChannel, getVoiceConnection } = require("@discordjs/voice")
-const connectToDB = require('../../scripts/dbconnect');
-const Track = require('../../db/models/track');
+const connectToDB = require('@scripts/dbconnect');
+const Track = require('@db/models/track');
 
 module.exports = {
   data: new SlashCommandBuilder()

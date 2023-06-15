@@ -1,5 +1,5 @@
 const { Routes } = require('discord.js');
-const { reloadCommands } = require('../utils/reloadCommands');
+const { reloadCommands } = require('@utils/reloadCommands');
 require('dotenv').config();
 
 // Update all subscribed Guilds' (/) commands
