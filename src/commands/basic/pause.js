@@ -13,9 +13,9 @@ module.exports = {
                 await interaction.reply('There is no track playing');
                 return;
             };
-            
+
             queue.node.setPaused(true);
-            await interaction.reply("Track was paused!");
+            await interaction.reply("Track was paused");
         } catch (e) {
             interaction.reply("pause error ", e)
         }

@@ -15,7 +15,7 @@ module.exports = {
             };
 
             queue.setRepeatMode(1);
-            await interaction.reply('Track was looped!')
+            await interaction.reply('Track was looped')
         } catch(e) {
             interaction.reply('loop error :', e);
         }

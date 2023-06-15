@@ -13,9 +13,9 @@ module.exports = {
                 await interaction.reply("There are no next tracks in the queue")
                 return;
             }
-            
+
             queue.node.skip();
-            await interaction.reply('Start playing next track!')
+            await interaction.reply('Start playing next track')
         } catch(e) {
             return interaction.reply('next error', e)
         }
