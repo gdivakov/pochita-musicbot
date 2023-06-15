@@ -10,7 +10,7 @@ module.exports = {
             const history = useHistory(interaction.guild.id);
             await history.previous();
 
-            await interaction.reply('Start playing previous track!')
+            await interaction.reply('Start playing previous track')
         } catch (e) {
             interaction.reply("previous error ", e)
         }
