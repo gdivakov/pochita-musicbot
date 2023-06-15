@@ -8,9 +8,14 @@ module.exports = {
     async execute({ client, interaction }) {
         try {
             const queue = useQueue(interaction.guild.id);
-            queue.node.setPaused(false);
 
-            await interaction.reply("Track was resumed");
+            if(!queue) {
+                await interaction.reply('There is no track playing');
+                return;
+            };
+            
+            queue.node.setPaused(false);
+            await interaction.reply("Track was resumed!");
 
         } catch (e) {
             return interaction.reply("Resume error: ", e)

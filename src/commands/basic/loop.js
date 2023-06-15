@@ -8,9 +8,14 @@ module.exports = {
     async execute({ client, interaction }) {
         try {
             const queue = useQueue(interaction.guild.id);
-            queue.setRepeatMode(1);
 
-            await interaction.reply('Track was looped')
+            if(!queue) {
+                await interaction.reply('There is no track playing');
+                return;
+            };
+
+            queue.setRepeatMode(1);
+            await interaction.reply('Track was looped!')
         } catch(e) {
             interaction.reply('loop error :', e);
         }
