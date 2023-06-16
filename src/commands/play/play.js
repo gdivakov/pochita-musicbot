@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders")
-const { joinVoiceChannel, getVoiceConnection } = require("@discordjs/voice")
+const { establishVCConnection } = require('@utils/voice');
 
 // play [url] - Move song from url to the beggining of the queue and play it
 module.exports = {
@@ -7,30 +7,24 @@ module.exports = {
         .setName('play')
         .setDescription('Play track from URL, queue moves ahead')
         .addStringOption(option =>
-            option.setName('url').setDescription('track URL')),
+            option.setName('url')
+            .setDescription('track URL')
+            .setRequired(true)),
     async execute({ client, interaction }) {
-        const channel = interaction.member.voice.channel;
 
-        if (!channel) {
-            return interaction.reply('You are not connected to a voice channel!'); // make sure we have a voice channel
-        }
-        
-        // Join voice channel // Todo: Join a voice channel only if not already there
-        const voiceConnection = joinVoiceChannel({
-            channelId: channel.id,
-            guildId: interaction.guildId,
-            adapterCreator: interaction.guild.voiceAdapterCreator
-        });
+        const connectionState = establishVCConnection(interaction);
 
-        // const connection = getVoiceConnection(voiceChannelId);
-
-        
+        if (!connectionState.status)
+        {
+            return await interaction.reply(connectionState.reason);;
+        };
 
         try {
             await interaction.deferReply();
 
             const options = { nodeOptions: { leaveOnEnd: false, metadata: interaction } }
             const trackURL = interaction.options.getString('url');
+            const channel = interaction.member.voice.channel;
 
             const { track, queue } = await client.player.play(channel, trackURL, options);
 

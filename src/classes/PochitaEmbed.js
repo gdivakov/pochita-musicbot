@@ -12,17 +12,13 @@ class PochitaEmbed extends EmbedBuilder {
 
   prepareSongStartedEmbed() {
     const { track } = this;
-    console.log('---------track', track);
+    // console.log('---------track', track);
 
     this.setTitle(prepareSongTitle(track));
     this.setURL(track.url);
     this.setColor(0x0099FF)
     this.setFieldsBySource(track.raw.source);
-
-    console.log('track.thumbnail', track.thumbnail);
     this.setImage(track.thumbnail);
-    // this.setTimestamp();
-    // this.setFooter({ text: 'Some footer text here', iconURL: 'https://i.imgur.com/AfFp7pu.png' });
 
     return this;
   }
@@ -44,7 +40,6 @@ class PochitaEmbed extends EmbedBuilder {
         break;
 
       case 'soundcloud':
-        console.log(this.track.raw.engine.author);
         const SkAuthor = this.track.raw.engine.author;
 
         this.setDescription(prepareDescription(this.track.raw.description));

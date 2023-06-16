@@ -40,8 +40,7 @@ function InitCommands() {
     applyToEachCommand(command => client.commands.set(command.data.name, command));
 
     // Reload dev guild commands
-    if (process.env.ENVIRONMENT === 'DEVELOPMENT')
-    {
+    if (process.env.ENVIRONMENT === 'DEVELOPMENT') {
         reloadCommands();
     }
 }
@@ -69,9 +68,13 @@ async function InitPlayer() {
     await client.player.extractors.loadDefault();
 
     client.player.events.on('playerStart', (queue, track) => {
-        const embed = new PochitaEmbed(track).prepareSongStartedEmbed();
+        try {
+            const embed = new PochitaEmbed(track).prepareSongStartedEmbed();
 
-        queue.metadata.channel.send({ embeds: [embed] });
+            queue.metadata.channel.send({ embeds: [embed] });
+        } catch (err) {
+            console.log('Some issue w/ PochitaEmbed', err);
+        }
     });
 
     client.player.events.on('connection', (queue) => {

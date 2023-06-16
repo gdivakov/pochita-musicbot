@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders")
-const { joinVoiceChannel, getVoiceConnection } = require("@discordjs/voice")
+const { establishVCConnection } = require('@utils/voice');
 const connectToDB = require('@scripts/dbconnect');
 const Track = require('@db/models/track');
 
@@ -8,26 +8,18 @@ module.exports = {
     .setName('play-all')
     .setDescription('Play all tracks'),
   async execute({ client, interaction }) {
-    // const connection = getVoiceConnection(voiceChannelId);
-    const channel = interaction.member.voice.channel;
 
-    if (!channel) {
-      return interaction.reply('You are not connected to a voice channel!'); // make sure we have a voice channel
-    }
+    const connectionState = establishVCConnection(interaction);
 
-    // join voice channel
-    const voiceChannelId = channel.id;
-    const voiceConnection = joinVoiceChannel({
-      channelId: voiceChannelId,
-      guildId: interaction.guildId,
-      adapterCreator: interaction.guild.voiceAdapterCreator
-    });
-
+    if (!connectionState.status) {
+      return await interaction.reply(connectionState.reason);;
+    };
 
     await interaction.deferReply();
 
     try {
       await connectToDB();
+      const channel = interaction.member.voice.channel;
 
       for await (const doc of Track.find()) {
         await client.player.play(channel, doc.URL, {

@@ -29,7 +29,7 @@ module.exports = {
       const track = new Track({ title, URL });
       await track.save();
 
-      console.log("new Track", Track);
+      // console.log("new Track", Track);
     } catch (err) {
       console.log('Error while creating the Track: ', err);
       return await interaction.reply('Error while creating the Track: ', err);

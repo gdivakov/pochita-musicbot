@@ -19,7 +19,7 @@ module.exports = {
       const playlist = new Playlist({ title });
       await playlist.save();
 
-      console.log("new playlist", playlist);
+      // console.log("new playlist", playlist);
     } catch (err)
     {
       console.log('Error while creating the playlist: ', err);
