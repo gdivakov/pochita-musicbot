@@ -1,3 +1,5 @@
+require('module-alias/register')
+
 const { Routes } = require('discord.js');
 const { reloadCommands } = require('@utils/reloadCommands');
 require('dotenv').config();

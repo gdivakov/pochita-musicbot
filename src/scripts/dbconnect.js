@@ -1,3 +1,4 @@
+require('module-alias/register')
 require('dotenv').config();
 const mongoose = require('mongoose');
 
