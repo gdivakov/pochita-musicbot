@@ -11,6 +11,10 @@ module.exports = {
     async execute({ client, interaction }) {
         const channel = interaction.member.voice.channel;
 
+        if (!channel) {
+            return interaction.reply('You are not connected to a voice channel!'); // make sure we have a voice channel
+        }
+        
         // Join voice channel // Todo: Join a voice channel only if not already there
         const voiceConnection = joinVoiceChannel({
             channelId: channel.id,
@@ -20,9 +24,7 @@ module.exports = {
 
         // const connection = getVoiceConnection(voiceChannelId);
 
-        if (!channel) {
-            return interaction.reply('You are not connected to a voice channel!'); // make sure we have a voice channel
-        }
+        
 
         try {
             await interaction.deferReply();
