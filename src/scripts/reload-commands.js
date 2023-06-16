@@ -1,10 +1,5 @@
-const { Routes } = require('discord.js');
-const { reloadCommands } = require('../utils/reloadCommands');
-require('dotenv').config();
+require('module-alias/register')
+const { reloadCommands } = require('@utils/reloadCommands');
 
-// Update all subscribed Guilds' (/) commands
-reloadCommands(
-    Routes.applicationCommands(process.env.DISCORD_CLIENT_ID),
-    data => console.log(`Successfully reloaded ${data.length} (/) commands for client id: ${process.env.DISCORD_CLIENT_ID}.`),
-    error => console.log('Error while reloading (/) commands', error)
-);
+// Update (/) commands for all subscribed Guilds'
+reloadCommands();

@@ -1,8 +1,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 
-const applyToEachCommand = (callback) =>
-{
+const applyToEachCommand = (callback) => {
   const foldersPath = path.join(__dirname, '../commands');
   const commandFolders = fs.readdirSync(foldersPath);
 
@@ -21,8 +20,7 @@ const applyToEachCommand = (callback) =>
   }
 }
 
-const validateCommand = (command, filePath) =>
-{
+const validateCommand = (command, filePath) => {
   if ('data' in command && 'execute' in command) {
     return true;
   } else {

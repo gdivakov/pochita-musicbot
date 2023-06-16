@@ -1,11 +1,14 @@
+require('module-alias/register')
 require('dotenv').config();
 const path = require('node:path');
 const fs = require('node:fs');
-const { applyToEachCommand } = require('./utils');
 const { Client, GatewayIntentBits, Collection } = require('discord.js');
+const { generateDependencyReport, VoiceConnectionStatus } = require('@discordjs/voice');
 const { Player } = require('discord-player');
-const { VoiceConnectionStatus } = require('@discordjs/voice');
-const { generateDependencyReport } = require('@discordjs/voice');
+const { applyToEachCommand } = require('@utils');
+const { reloadCommands } = require('@utils/reloadCommands');
+const { prepareSongTitle } = require('@utils/formatString');
+const PochitaEmbed = require("@classes/PochitaEmbed");
 
 const client = new Client({
     intents: [
@@ -35,6 +38,11 @@ function InitCommands() {
     client.commands = new Collection();
     // Set a new item in the Collection with the key as the command name and the value as the exported module
     applyToEachCommand(command => client.commands.set(command.data.name, command));
+
+    // Reload dev guild commands
+    if (process.env.ENVIRONMENT === 'DEVELOPMENT') {
+        reloadCommands();
+    }
 }
 
 function InitEvents() {
@@ -55,16 +63,18 @@ function InitEvents() {
 }
 
 async function InitPlayer() {
-    // this is the entrypoint for discord-player based application
     client.player = new Player(client);
 
-    // This method will load all the extractors from the @discord-player/extractor package
     await client.player.extractors.loadDefault();
 
-    // this event is emitted whenever discord-player starts to play a track
     client.player.events.on('playerStart', (queue, track) => {
-        // we will later define queue.metadata object while creating the queue
-        queue.metadata.channel.send(`Started playing **${track.title}**!`);
+        try {
+            const embed = new PochitaEmbed(track).prepareSongStartedEmbed();
+
+            queue.metadata.channel.send({ embeds: [embed] });
+        } catch (err) {
+            console.log('Some issue w/ PochitaEmbed', err);
+        }
     });
 
     client.player.events.on('connection', (queue) => {
@@ -76,10 +86,8 @@ async function InitPlayer() {
     });
 }
 
-function InitLogging()
-{
-    if (process.env.IS_LOGGING_ENABLED !== 'TRUE')
-    {
+function InitLogging() {
+    if (process.env.IS_LOGGING_ENABLED !== 'TRUE') {
         return;
     }
 
