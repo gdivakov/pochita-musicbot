@@ -9,7 +9,7 @@ module.exports = {
         try {
             const queue = useQueue(interaction.guild.id);
 
-            if(!queue) {
+            if (!queue) {
                 await interaction.reply('There is no track playing');
                 return;
             };

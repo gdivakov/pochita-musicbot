@@ -8,21 +8,21 @@ module.exports = {
     .setName('play-all')
     .setDescription('Play all tracks'),
   async execute({ client, interaction }) {
+    // const connection = getVoiceConnection(voiceChannelId);
+    const channel = interaction.member.voice.channel;
+
+    if (!channel) {
+      return interaction.reply('You are not connected to a voice channel!'); // make sure we have a voice channel
+    }
+
     // join voice channel
-    const voiceChannelId = interaction.member.voice.channel.id;
+    const voiceChannelId = channel.id;
     const voiceConnection = joinVoiceChannel({
       channelId: voiceChannelId,
       guildId: interaction.guildId,
       adapterCreator: interaction.guild.voiceAdapterCreator
     });
 
-    // const connection = getVoiceConnection(voiceChannelId);
-
-    const channel = interaction.member.voice.channel;
-
-    if (!channel) {
-      return interaction.reply('You are not connected to a voice channel!'); // make sure we have a voice channel
-    }
 
     await interaction.deferReply();
 

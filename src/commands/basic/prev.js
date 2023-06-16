@@ -9,7 +9,7 @@ module.exports = {
         try {
             const history = useHistory(interaction.guild.id);
 
-            if(!history || !history.tracks.data.length) {
+            if (!history || !history.tracks.data.length) {
                 await interaction.reply("There are no previous tracks in the queue");
                 return;
             }
