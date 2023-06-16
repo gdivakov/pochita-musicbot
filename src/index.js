@@ -1,12 +1,12 @@
 require('module-alias/register')
 require('dotenv').config();
-
 const path = require('node:path');
 const fs = require('node:fs');
 const { Client, GatewayIntentBits, Collection } = require('discord.js');
 const { generateDependencyReport, VoiceConnectionStatus } = require('@discordjs/voice');
 const { Player } = require('discord-player');
 const { applyToEachCommand } = require('@utils');
+const { reloadCommands } = require('@utils/reloadCommands');
 const { prepareSongTitle } = require('@utils/formatString');
 const PochitaEmbed = require("@classes/PochitaEmbed");
 
@@ -38,6 +38,12 @@ function InitCommands() {
     client.commands = new Collection();
     // Set a new item in the Collection with the key as the command name and the value as the exported module
     applyToEachCommand(command => client.commands.set(command.data.name, command));
+
+    // Reload dev guild commands
+    if (process.env.ENVIRONMENT === 'DEVELOPMENT')
+    {
+        reloadCommands();
+    }
 }
 
 function InitEvents() {

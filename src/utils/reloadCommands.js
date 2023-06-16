@@ -1,24 +1,24 @@
-const { REST } = require('discord.js');
+require('dotenv').config();
+const { REST, Routes } = require('discord.js');
 const { applyToEachCommand } = require('@utils');
 
-const COMMANDS_TO_UPDATE =
-[
-    'play',
-    'play-all',
-    'list'
-];
+const getRouteByEnvironment = () => {
+    const { ENVIRONMENT, DISCORD_CLIENT_ID, DISCORD_GUILD_ID } = process.env;
 
-async function reloadCommands(route, onSuccess, onError) {
+    if (ENVIRONMENT === 'PRODUCTION')
+    {
+        return Routes.applicationCommands(DISCORD_CLIENT_ID);
+    }
+
+    return Routes.applicationGuildCommands(DISCORD_CLIENT_ID, DISCORD_GUILD_ID);
+}
+
+async function reloadCommands() {
     let commands = [];
 
     applyToEachCommand(command => {
         commands.push(command.data.toJSON());
     });
-
-    // Update specific commands
-    // commands = commands.filter(command => COMMANDS_TO_UPDATE.includes(command.name));
-
-    console.log('commands to update', commands);
 
     try {
         console.log(`Started refreshing ${commands.length} application (/) commands.`);
@@ -27,11 +27,10 @@ async function reloadCommands(route, onSuccess, onError) {
         const rest = new REST().setToken(process.env.DISCORD_TOKEN);
 
         // Fully refresh all commands with the current set
-        const data = await rest.put(route, { body: commands });
-        console.log(data);
-        onSuccess(data);
+        const data = await rest.put(getRouteByEnvironment(), { body: commands });
+        console.log(`Successfully reloaded ${data.length} (/) commands`);
     } catch (error) {
-        onError(error);
+        console.log('Error while reloading (/) commands', error);
     }
 }
 
