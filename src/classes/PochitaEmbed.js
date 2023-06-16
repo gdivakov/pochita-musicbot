@@ -12,7 +12,7 @@ class PochitaEmbed extends EmbedBuilder {
 
   prepareSongStartedEmbed() {
     const { track } = this;
-    // console.log('---------track', track);
+    console.log('---------track', track);
 
     this.setTitle(prepareSongTitle(track));
     this.setURL(track.url);
@@ -31,9 +31,9 @@ class PochitaEmbed extends EmbedBuilder {
     switch (source) {
 
       case 'youtube':
-        const { raw: { channel, tags, description, name }, raw, views, duration } = this.track;
+        const { raw: { channel, tags, description }, raw, views, duration } = this.track;
         this.setDescription(prepareDescription(description));
-        this.setAuthor({ name, iconURL: channel.icon.url, url: channel.url });
+        this.setAuthor({ name: channel.name, iconURL: channel.icon.url, url: channel.url });
 
         this.addFields(
           { name: 'Tags:', value: prepareTags(tags) },
