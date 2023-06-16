@@ -3,10 +3,12 @@ require('dotenv').config();
 
 const path = require('node:path');
 const fs = require('node:fs');
-const { Client, GatewayIntentBits, Collection, EmbedBuilder } = require('discord.js');
-const { generateDependencyReport } = require('@discordjs/voice');
+const { Client, GatewayIntentBits, Collection } = require('discord.js');
+const { generateDependencyReport, VoiceConnectionStatus } = require('@discordjs/voice');
 const { Player } = require('discord-player');
-const { applyToEachCommand, prepareSongTitle } = require('@utils');
+const { applyToEachCommand } = require('@utils');
+const { prepareSongTitle } = require('@utils/formatString');
+const PochitaEmbed = require("@classes/PochitaEmbed");
 
 const client = new Client({
     intents: [
@@ -61,28 +63,7 @@ async function InitPlayer() {
     await client.player.extractors.loadDefault();
 
     client.player.events.on('playerStart', (queue, track) => {
-        // console.log(track);
-
-        const embed = new EmbedBuilder()
-            .setTitle(prepareSongTitle(track))
-            .setURL(track.url)
-            .setThumbnail(track.thumbnail)
-            .setColor('Yellow')
-            //
-            .setColor(0x0099FF)
-            .setAuthor({ name: 'Some name', iconURL: 'https://i.imgur.com/AfFp7pu.png', url: 'https://discord.js.org' })
-            .setDescription('Some description here')
-            .setThumbnail('https://i.imgur.com/AfFp7pu.png')
-            .addFields(
-                { name: 'Regular field title', value: 'Some value here' },
-                { name: '\u200B', value: '\u200B' },
-                { name: 'Inline field title', value: 'Some value here', inline: true },
-                { name: 'Inline field title', value: 'Some value here', inline: true },
-            )
-            .addFields({ name: 'Inline field title', value: 'Some value here', inline: true })
-            .setImage('https://i.imgur.com/AfFp7pu.png')
-            .setTimestamp()
-            .setFooter({ text: 'Some footer text here', iconURL: 'https://i.imgur.com/AfFp7pu.png' });            ;
+        const embed = new PochitaEmbed(track).prepareSongStartedEmbed();
 
         queue.metadata.channel.send({ embeds: [embed] });
     });

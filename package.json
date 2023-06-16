@@ -34,6 +34,7 @@
     "@db": "src/db",
     "@events": "src/events",
     "@scripts": "src/scripts",
-    "@utils": "src/utils"
+    "@utils": "src/utils",
+    "@classes": "src/classes"
   }
 }
