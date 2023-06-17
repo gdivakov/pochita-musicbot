@@ -1,10 +1,10 @@
-const { joinVoiceChannel, getVoiceConnection } = require("@discordjs/voice")
+const { joinVoiceChannel, getVoiceConnection } = require('@discordjs/voice');
 
 const establishVCConnection = (interaction) => {
 	const channel = interaction.member.voice.channel;
 
 	if (!channel) {
-		return { status: false, reason: 'You are not connected to a voice channel' }
+		return { status: false, reason: 'You are not connected to a voice channel' };
 	}
 
 	let VCConnection = getVoiceConnection(channel.guild.id);
@@ -12,7 +12,7 @@ const establishVCConnection = (interaction) => {
 	// No connection - try to connect
 	if (!VCConnection) {
 		// Join voice channel
-		const voiceConnection = joinVoiceChannel({
+		joinVoiceChannel({
 			channelId: channel.guild.id,
 			guildId: interaction.guildId,
 			adapterCreator: interaction.guild.voiceAdapterCreator
@@ -22,10 +22,10 @@ const establishVCConnection = (interaction) => {
 	}
 
 	if (!VCConnection) {
-		return { status: false, reason: `Can't connect to a voice channel` }
+		return { status: false, reason: 'Can\'t connect to a voice channel' };
 	}
 
-	return { status: true }
-}
+	return { status: true };
+};
 
-module.exports = { establishVCConnection }
+module.exports = { establishVCConnection };

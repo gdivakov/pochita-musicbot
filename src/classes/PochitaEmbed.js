@@ -15,7 +15,7 @@ class PochitaEmbed extends EmbedBuilder {
 		// Common fields
 		this.setTitle(prepareSongTitle(track));
 		this.setURL(track.url);
-		this.setColor(0x0099FF)
+		this.setColor(0x0099FF);
 
 		// Raw fields (source specific)
 		this.setFieldsBySource(track.raw.source);

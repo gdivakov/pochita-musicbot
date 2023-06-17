@@ -4,6 +4,7 @@
   "description": "",
   "main": "src/index",
   "scripts": {
+    "lint:fix": "eslint --fix .",
     "start": "node src/index",
     "start watching": "nodemon",
     "reload-commands": "node src/scripts/reload-commands",

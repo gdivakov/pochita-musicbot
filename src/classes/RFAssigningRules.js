@@ -39,7 +39,7 @@ module.exports = [
 	// Spotify
 	{
 		validateSource: source => source == SUPPORTED_PLATFORMS.SPOTIFY.toLowerCase(),
-		setRawFields: ({ track: { raw: { author, description, source }, raw, duration }, embed }) => {
+		setRawFields: ({ track: { raw: { author, description, source }, duration }, embed }) => {
 
 			embed.setDescription(prepareDescription(description));
 			embed.setAuthor({ name: author });
@@ -53,7 +53,7 @@ module.exports = [
 	// Deezer
 	{
 		validateSource: (source, url) => source == 'arbitrary' && url.indexOf('https://deezer.com/') == 0,
-		setRawFields: ({ track: { raw: { author }, raw, duration }, embed }) => {
+		setRawFields: ({ track: { raw: { author }, duration }, embed }) => {
 
 			const firstAuthor = author[0];
 
@@ -64,4 +64,4 @@ module.exports = [
 			);
 		}
 	},
-]
+];
