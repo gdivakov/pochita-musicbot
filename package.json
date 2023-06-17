@@ -35,5 +35,9 @@
     "@scripts": "src/scripts",
     "@utils": "src/utils",
     "@classes": "src/classes"
+  },
+  "devDependencies": {
+    "eslint": "^8.43.0",
+    "nodemon": "^2.0.22"
   }
 }
