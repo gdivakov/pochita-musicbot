@@ -18,7 +18,7 @@ const prepareTitle = (title, maxLength) => {
 };
 
 const prepareDescription = (desc) => {
-	if (!desc.length) {
+	if (!desc || !desc.length) {
 		return ' ';
 	}
 
