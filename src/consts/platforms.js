@@ -4,7 +4,8 @@ const SUPPORTED_PLATFORMS = {
   VIMEO: 'Vimeo',
   YOUTUBE: 'YouTube',
   SPOTIFY: 'Spotify',
-  APPLE_MUSIC: 'Apple Music'
+  APPLE_MUSIC: 'Apple Music',
+  DEEZER: 'Deezer'
 }
 
 module.exports = SUPPORTED_PLATFORMS;

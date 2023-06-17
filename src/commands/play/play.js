@@ -5,9 +5,9 @@ const { establishVCConnection } = require('@utils/voice');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('play')
-        .setDescription('Play track from URL, queue moves ahead')
+        .setDescription('Play track by query: direct URL or search string. Queue moves ahead')
         .addStringOption(option =>
-            option.setName('url')
+            option.setName('query')
             .setDescription('track URL')
             .setRequired(true)),
     async execute({ client, interaction }) {
@@ -23,10 +23,10 @@ module.exports = {
             await interaction.deferReply();
 
             const options = { nodeOptions: { leaveOnEnd: false, metadata: interaction } }
-            const trackURL = interaction.options.getString('url');
+            const trackQuery = interaction.options.getString('query');
             const channel = interaction.member.voice.channel;
 
-            const { track, queue } = await client.player.play(channel, trackURL, options);
+            const { track, queue } = await client.player.play(channel, trackQuery, options);
 
             // In case we have queue ahead
             if (queue.tracks.data.length) {

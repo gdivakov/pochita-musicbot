@@ -9,6 +9,7 @@ const { applyToEachCommand } = require('@utils');
 const { reloadCommands } = require('@utils/reloadCommands');
 const { prepareSongTitle } = require('@utils/formatString');
 const PochitaEmbed = require("@classes/PochitaEmbed");
+const DeezerExtractor = require("discord-player-deezer").default
 
 const client = new Client({
     intents: [
@@ -64,6 +65,11 @@ function InitEvents() {
 
 async function InitPlayer() {
     client.player = new Player(client);
+
+    // Register unofficial deezer extractor
+    // Note: be sure to register it before loading the default extractors
+    // to make sure any conflicts with discord-player's default attachment extractor is resolved!
+    client.player.extractors.register(DeezerExtractor)
 
     await client.player.extractors.loadDefault();
 
