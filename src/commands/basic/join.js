@@ -1,5 +1,4 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-// const { joinVoiceChannel } = require("@discordjs/voice")
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -12,6 +11,6 @@ module.exports = {
 		//   adapterCreator: interaction.guild.voiceAdapterCreator
 		// });
 
-		await interaction.reply('Joined!');
+		interaction.reply('Joined');
 	},
 };

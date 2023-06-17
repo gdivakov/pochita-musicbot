@@ -14,27 +14,20 @@ module.exports = {
 			option.setName('title')
 				.setDescription('Title')
 				.setAutocomplete(true)),
-	async execute({ client, interaction }) {
-		try {
-			await connectToDB();
+	async execute({ interaction }) {
+		await connectToDB();
 
-			const title = interaction.options.getString('title', true); // we need input/query to play
-			const URL = interaction.options.getString('url', true); // we need input/query to play
+		const title = interaction.options.getString('title', true);
+		const URL = interaction.options.getString('url', true);
 
-			if (!URL)
-			{
-				return await interaction.reply('You must specify the URL!');
-			}
-
-			const track = new Track({ title, URL });
-			await track.save();
-
-			// console.log("new Track", Track);
-		} catch (err) {
-			console.log('Error while creating the Track: ', err);
-			return await interaction.reply('Error while creating the Track: ', err);
+		if (!URL)
+		{
+			return interaction.reply('You must specify the URL');
 		}
 
-		await interaction.reply('Track created!');
+		const track = new Track({ title, URL });
+		await track.save();
+
+		interaction.reply('Track created');
 	},
 };

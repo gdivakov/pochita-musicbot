@@ -6,19 +6,14 @@ module.exports = {
 		.setName('next')
 		.setDescription('Next track'),
 	async execute({ interaction }) {
-		try {
-			const queue = useQueue(interaction.guild.id);
+		const queue = useQueue(interaction.guild.id);
 
-			if (!queue || !queue.tracks.data.length) {
-				await interaction.reply('There are no next tracks in the queue');
-				return;
-			}
-
-			queue.node.skip();
-			await interaction.reply('Start playing next track');
-		} catch (e) {
-			return interaction.reply('next error', e);
+		if (!queue || !queue.tracks.data.length) {
+			return interaction.reply('There are no next tracks in the queue');
 		}
 
+		queue.node.skip();
+
+		interaction.reply('Start playing next track');
 	}
 };

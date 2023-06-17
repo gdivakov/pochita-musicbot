@@ -6,19 +6,14 @@ module.exports = {
 		.setName('loop')
 		.setDescription('Loop current track'),
 	async execute({ interaction }) {
-		try {
-			const queue = useQueue(interaction.guild.id);
+		const queue = useQueue(interaction.guild.id);
 
-			if (!queue) {
-				await interaction.reply('There is no track playing');
-				return;
-			}
-
-			queue.setRepeatMode(1);
-			await interaction.reply('Track was looped');
-		} catch (e) {
-			interaction.reply('loop error :', e);
+		if (!queue) {
+			return interaction.reply('There is no track playing');
 		}
 
+		queue.setRepeatMode(1);
+
+		interaction.reply('Track was looped');
 	}
 };

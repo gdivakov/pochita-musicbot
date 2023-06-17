@@ -5,19 +5,15 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('prev')
 		.setDescription('Previous track'),
-	async execute({ client, interaction }) {
-		try {
-			const history = useHistory(interaction.guild.id);
+	async execute({ interaction }) {
+		const history = useHistory(interaction.guild.id);
 
-			if (!history || !history.tracks.data.length) {
-				await interaction.reply('There are no previous tracks in the queue');
-				return;
-			}
-
-			await history.previous();
-			await interaction.reply('Start playing previous track');
-		} catch (e) {
-			interaction.reply('previous error ', e);
+		if (!history || !history.tracks.data.length) {
+			return interaction.reply('There are no previous tracks in the queue');
 		}
+
+		await history.previous();
+
+		interaction.reply('Start playing previous track');
 	}
 };

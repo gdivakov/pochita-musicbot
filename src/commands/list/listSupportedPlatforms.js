@@ -6,12 +6,8 @@ module.exports = {
 		.setName('list-platforms')
 		.setDescription('Get a list of supported platforms'),
 	async execute({ interaction }) {
-		try {
-			const supportedPlatforms = '- ' + Object.values(SUPPORTED_PLATFORMS).join('\n- ');
+		const supportedPlatforms = '- ' + Object.values(SUPPORTED_PLATFORMS).join('\n- ');
 
-			await interaction.reply(`**Supported platforms:** \n${supportedPlatforms}`);
-		} catch (e) {
-			return interaction.reply(`list error ${e}`);
-		}
+		interaction.reply(`**Supported platforms:** \n${supportedPlatforms}`);
 	}
 };

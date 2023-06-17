@@ -31,6 +31,7 @@ function Init() {
 	InitLogging();
 
 	// Log in to Discord with app's token
+	// eslint-disable-next-line no-undef
 	client.login(process.env.DISCORD_TOKEN);
 }
 
@@ -40,12 +41,14 @@ function InitCommands() {
 	applyToEachCommand(command => client.commands.set(command.data.name, command));
 
 	// Reload dev guild commands
+	// eslint-disable-next-line no-undef
 	if (process.env.ENVIRONMENT === 'DEVELOPMENT') {
 		reloadCommands();
 	}
 }
 
 function InitEvents() {
+	// eslint-disable-next-line no-undef
 	const eventsPath = path.join(__dirname, 'events');
 	const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
 
@@ -92,6 +95,7 @@ async function InitPlayer() {
 }
 
 function InitLogging() {
+	// eslint-disable-next-line no-undef
 	if (process.env.IS_LOGGING_ENABLED !== 'TRUE') {
 		return;
 	}

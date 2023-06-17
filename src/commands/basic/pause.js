@@ -6,19 +6,14 @@ module.exports = {
 		.setName('pause')
 		.setDescription('Pause a track'),
 	async execute({ interaction }) {
-		try {
-			const queue = useQueue(interaction.guild.id);
+		const queue = useQueue(interaction.guild.id);
 
-			if (!queue) {
-				await interaction.reply('There is no track playing');
-				return;
-			}
-
-			queue.node.setPaused(true);
-			await interaction.reply('Track was paused');
-		} catch (e) {
-			interaction.reply('pause error ', e);
+		if (!queue) {
+			return interaction.reply('There is no track playing');
 		}
 
+		queue.node.setPaused(true);
+
+		await interaction.reply('Track was paused');
 	}
 };

@@ -1,0 +1,4 @@
+module.exports = {
+	PRODUCTION: 'PRODUCTION',
+	DEVELOPMENT: 'DEVELOPMENT'
+};

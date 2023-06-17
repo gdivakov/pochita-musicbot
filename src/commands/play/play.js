@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { establishVCConnection } = require('@utils/voice');
+const { prepareSongTitle } = require('@utils/formatString');
 
-// play [url] - Move song from url to the beggining of the queue and play it
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('play')
@@ -16,31 +16,26 @@ module.exports = {
 
 		if (!connectionState.status)
 		{
-			return await interaction.reply(connectionState.reason);
+			return interaction.reply(connectionState.reason);
 		}
 
-		try {
-			await interaction.deferReply();
+		await interaction.deferReply();
 
-			const options = { nodeOptions: { leaveOnEnd: false, metadata: interaction } };
-			const trackQuery = interaction.options.getString('query');
-			const channel = interaction.member.voice.channel;
+		const options = { nodeOptions: { leaveOnEnd: false, metadata: interaction } };
+		const trackQuery = interaction.options.getString('query');
+		const channel = interaction.member.voice.channel;
 
-			const { track, queue } = await client.player.play(channel, trackQuery, options);
+		const { track, queue } = await client.player.play(channel, trackQuery, options);
 
-			// In case we have queue ahead
-			if (queue.tracks.data.length) {
-				// move track to start position
-				queue.node.move(queue.tracks.data.length - 1, 0);
+		// In case we have queue ahead
+		if (queue.tracks.data.length) {
+			// move track to start position
+			queue.node.move(queue.tracks.data.length - 1, 0);
 
-				// and play it
-				queue.node.skip();
-			}
-
-			return interaction.followUp('Started a new track');
-
-		} catch (e) {
-			return interaction.followUp(`Something went wrong: ${e}`);
+			// and play it
+			queue.node.skip();
 		}
+
+		interaction.followUp(`Started a new track: ${prepareSongTitle(track)}`);
 	},
 };

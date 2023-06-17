@@ -5,20 +5,15 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('unloop')
 		.setDescription('Unloop current track'),
-	async execute({ client, interaction }) {
-		try {
-			const queue = useQueue(interaction.guild.id);
+	async execute({ interaction }) {
+		const queue = useQueue(interaction.guild.id);
 
-			if (!queue) {
-				interaction.reply('There is no track playing');
-				return;
-			}
-
-			queue.setRepeatMode(0);
-			await interaction.reply('Track was unlooped');
-		} catch (e) {
-			return interaction.reply('Unloop error', e);
+		if (!queue) {
+			return interaction.reply('There is no track playing');
 		}
 
+		queue.setRepeatMode(0);
+
+		interaction.reply('Track was unlooped');
 	}
 };
