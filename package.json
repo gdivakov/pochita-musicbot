@@ -27,9 +27,6 @@
     "tweetnacl": "^1.0.3",
     "ytdl-core": "^4.11.4"
   },
-  "devDependencies": {
-    "eslint": "^8.42.0"
-  },
   "_moduleAliases": {
     "@commands": "src/commands",
     "@consts": "src/consts",
