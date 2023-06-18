@@ -12,8 +12,10 @@ module.exports = {
 			return interaction.reply('There are no next tracks in the queue');
 		}
 
-		queue.node.skip();
+		// Defer reply as PlayerStart event is responsible for handling that
+		await interaction.deferReply();
+		queue.setMetadata(interaction);
 
-		interaction.reply('Start playing next track');
+		queue.node.skip();
 	}
 };

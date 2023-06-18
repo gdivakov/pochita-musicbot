@@ -15,7 +15,7 @@ module.exports = {
 
 		if (!connectionState.status)
 		{
-			return interaction.reply(connectionState.reason);
+			return await interaction.reply(connectionState.reason);
 		}
 
 		await interaction.deferReply();
@@ -26,6 +26,6 @@ module.exports = {
 
 		const { track, queue } = await client.player.play(channel, trackQuery, options);
 
-		interaction.followUp(`${prepareSongTitle(track)} added to the queue`);
+		await interaction.followUp(`${prepareSongTitle(track)} added to the queue`);
 	},
 };

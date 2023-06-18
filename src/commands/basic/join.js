@@ -11,6 +11,6 @@ module.exports = {
 		//   adapterCreator: interaction.guild.voiceAdapterCreator
 		// });
 
-		interaction.reply('Joined');
+		await interaction.reply('Joined');
 	},
 };

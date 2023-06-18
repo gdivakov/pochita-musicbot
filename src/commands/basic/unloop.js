@@ -9,11 +9,11 @@ module.exports = {
 		const queue = useQueue(interaction.guild.id);
 
 		if (!queue) {
-			return interaction.reply('There is no track playing');
+			return await interaction.reply('There is no track playing');
 		}
 
 		queue.setRepeatMode(0);
 
-		interaction.reply('Track was unlooped');
+		await interaction.reply('Track was unlooped');
 	}
 };

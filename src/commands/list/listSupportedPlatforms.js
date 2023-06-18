@@ -8,6 +8,6 @@ module.exports = {
 	async execute({ interaction }) {
 		const supportedPlatforms = '- ' + Object.values(SUPPORTED_PLATFORMS).join('\n- ');
 
-		interaction.reply(`**Supported platforms:** \n${supportedPlatforms}`);
+		await interaction.reply(`**Supported platforms:** \n${supportedPlatforms}`);
 	}
 };

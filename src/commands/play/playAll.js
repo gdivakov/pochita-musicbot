@@ -27,6 +27,6 @@ module.exports = {
 			});
 		}
 
-		interaction.followUp('Play all tracks');
+		await interaction.followUp('Play all tracks');
 	},
 };

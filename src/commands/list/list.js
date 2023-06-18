@@ -10,16 +10,15 @@ module.exports = {
 		const queue = client.player.queues.get(interaction.guildId);
 
 		if(!queue) {
-			return interaction.reply('There is no queue');
+			return await interaction.reply('There is no queue');
 		}
 
 		const prevTracks = queue.history.tracks.data.slice(0, PREV_TRACKS_TO_SHOW_NUM).reverse().map(prepareSongTitle).join('\n\t');
 		const currentTrack = queue.currentTrack;
 		const nextTracks = queue.tracks.data.slice(0, NEXT_TRACKS_TO_SHOW_NUM).map(prepareSongTitle).join('\n\t');
 
-		const displayedQueue = '\t' + prevTracks + '\n' + '> ' + prepareSongTitle(currentTrack) + '\n\t' + nextTracks;
+		const displayedQueue = '\t' + prevTracks + '\n' + '> ' + prepareSongTitle(null) + '\n\t' + nextTracks;
 
-		interaction.reply(`Queue list: \n${displayedQueue}`);
+		await interaction.reply(`Queue list: \n${displayedQueue}`);
 	}
-
 };

@@ -9,11 +9,11 @@ module.exports = {
 		const queue = useQueue(interaction.guild.id);
 
 		if (!queue) {
-			return interaction.reply('There is no track playing');
+			return await interaction.reply('There is no track playing');
 		}
 
 		queue.node.setPaused(false);
 
-		interaction.reply('Track was resumed!');
+		await interaction.reply('Track was resumed');
 	}
 };

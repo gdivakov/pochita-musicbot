@@ -14,10 +14,9 @@ module.exports = {
 		await connectToDB();
 
 		const title = interaction.options.getString('title', true);
-
 		const playlist = new Playlist({ title });
-		await playlist.save();
 
-		interaction.reply('Playlist created');
+		await playlist.save();
+		await interaction.reply('Playlist created');
 	},
 };

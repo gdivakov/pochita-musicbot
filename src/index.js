@@ -75,13 +75,22 @@ async function InitPlayer() {
 
 	await client.player.extractors.loadDefault();
 
-	client.player.events.on('playerStart', (queue, track) => {
+	client.player.events.on('playerStart', async ({ metadata }, track) => {
 		try {
 			const embed = new PochitaEmbed(track).prepareSongStartedEmbed();
 
-			queue.metadata.channel.send({ embeds: [embed] });
+			const isWaitingForReply = !metadata.replied && metadata.deferred;
+
+			if (isWaitingForReply)
+			{
+				await metadata.editReply({ embeds: [embed] });
+			} else
+			{
+				await metadata.channel.send({ embeds: [embed] });
+			}
+
 		} catch (err) {
-			console.log('Some issue w/ PochitaEmbed', err);
+			console.log('Error sending embed:', err);
 		}
 	});
 

@@ -22,12 +22,12 @@ module.exports = {
 
 		if (!URL)
 		{
-			return interaction.reply('You must specify the URL');
+			return await interaction.reply('You must specify the URL');
 		}
 
 		const track = new Track({ title, URL });
-		await track.save();
 
-		interaction.reply('Track created');
+		await track.save();
+		await interaction.reply('Track created');
 	},
 };
