@@ -1,7 +1,11 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { establishVCConnection } = require('@utils/voice');
 const { prepareSongTitle } = require('@utils/formatString');
-const PochitaEmbed = require('@classes/PochitaEmbed');
+const { QueryType } = require('discord-player');
+const SUPPORTED_PLATFORMS = require('@consts/platforms');
+const { useQueue } = require('discord-player');
+
+const PREFFERED_SEARCH_PLATFORM = SUPPORTED_PLATFORMS.YOUTUBE;
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -25,7 +29,10 @@ module.exports = {
 
 		await interaction.deferReply();
 
-		const searchResult = await client.player.search(trackQuery, { requestedBy: interaction.user });
+		const isDirectURL = trackQuery.indexOf('https://') === 0;
+		const searchEngine = isDirectURL ? QueryType.AUTO : QueryType.YOUTUBE_SEARCH;
+
+		const searchResult = await client.player.search(trackQuery, { requestedBy: interaction.user, searchEngine });
 
 		if (!searchResult.hasTracks()) {
 			await interaction.editReply(`We found no tracks for ${trackQuery}!`);

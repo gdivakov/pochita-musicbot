@@ -7,7 +7,7 @@ module.exports = {
 		.setDescription('Resume a track'),
 	async execute({ interaction }) {
 		const queue = useQueue(interaction.guild.id);
-
+		console.log('interaction', interaction);
 		if (!queue) {
 			return await interaction.reply('There is no track playing');
 		}
