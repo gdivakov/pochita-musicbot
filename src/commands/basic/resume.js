@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { useQueue } = require('discord-player');
-
+const useResume = require('@hooks/useResume');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('resume')
@@ -12,7 +12,7 @@ module.exports = {
 			return await interaction.reply('There is no track playing');
 		}
 
-		queue.node.setPaused(false);
+		useResume(interaction.guild.id);
 
 		await interaction.reply('Track was resumed');
 	}

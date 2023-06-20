@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { establishVCConnection } = require('@utils/voice');
 const { prepareSongTitle } = require('@utils/formatString');
+const useResume = require('@hooks/useResume');
 const PochitaEmbed = require('@classes/PochitaEmbed');
 
 module.exports = {
@@ -45,5 +46,6 @@ module.exports = {
 			// and play it
 			queue.node.skip();
 		}
+		useResume(interaction.guild.id);
 	}
 }

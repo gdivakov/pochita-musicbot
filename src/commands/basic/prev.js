@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { useHistory, useQueue } = require('discord-player');
-
+const useResume = require('@hooks/useResume');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('prev')
@@ -18,5 +18,6 @@ module.exports = {
 		queue.setMetadata(interaction);
 
 		await history.previous();
+		useResume(interaction.guild.id);
 	}
 };

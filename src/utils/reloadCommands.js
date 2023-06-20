@@ -22,7 +22,7 @@ async function reloadCommands() {
 
 	try {
 		console.log(`Started refreshing ${commands.length} application (/) commands.`);
-
+		
 		// // Construct and prepare an instance of the REST module
 		const rest = new REST().setToken(process.env.DISCORD_TOKEN);
 

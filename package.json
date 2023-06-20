@@ -34,7 +34,9 @@
     "@events": "src/events",
     "@scripts": "src/scripts",
     "@utils": "src/utils",
-    "@classes": "src/classes"
+    "@classes": "src/classes",
+    "@hooks" : "src/hooks"
+    
   },
   "devDependencies": {
     "eslint": "^8.43.0",

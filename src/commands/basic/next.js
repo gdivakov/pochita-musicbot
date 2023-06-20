@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { useQueue } = require('discord-player');
-
+const useResume = require('@hooks/useResume');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('next')
@@ -8,8 +8,9 @@ module.exports = {
 	async execute({ interaction }) {
 		const queue = useQueue(interaction.guild.id);
 
+		console.log("next")
 		if (!queue || !queue.tracks.data.length) {
-			return interaction.reply('There are no next tracks in the queue');
+			return await interaction.reply('There are no next tracks in the queue');
 		}
 
 		// Defer reply as PlayerStart event is responsible for handling that
@@ -17,5 +18,6 @@ module.exports = {
 		queue.setMetadata(interaction);
 
 		queue.node.skip();
+		useResume(interaction.guild.id);
 	}
 };
