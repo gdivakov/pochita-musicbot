@@ -22,6 +22,8 @@ module.exports = {
 		'ecmaVersion': 'latest'
 	},
 	'rules': {
+		'no-process-env': 'off',
+    	'no-process-exit': 'off',
 		'indent': [
 			'error',
 			'tab'
