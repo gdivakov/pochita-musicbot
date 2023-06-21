@@ -5,6 +5,7 @@ const useResume = require('@hooks/useResume');
 const connectToDB = require('@scripts/dbconnect');
 const Track = require('@db/models/track');
 const useMoveToStart = require('@hooks/useMoveToStart');
+const useDatabase = require('@hooks/useDatabase');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -17,13 +18,13 @@ module.exports = {
 			return interaction.reply(connectionState.reason);
 		}
 
-		await connectToDB();
 		await interaction.deferReply();
 
 		const guildId = interaction.guild.id;
 		let queue = useQueue(guildId);
+		const db = useDatabase();
 
-		const allTracks = await Track.find();
+		const allTracks = await db.getAllTracks();
 
 		// If currentTrack !== null we must skip it
 		const withSkip = queue && queue.currentTrack;
