@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const { prepareSongTitle } = require('@utils/formatString');
-const RF_ASSIGNING_RULES = require('@classes/RFAssigningRules');
+const RF_ASSIGNING_RULES = require('@classes/TrackCard/RFAssigningRules');
 
 class PochitaEmbed extends EmbedBuilder {
 	constructor(track, ...rest) {

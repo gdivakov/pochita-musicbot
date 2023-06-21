@@ -7,7 +7,7 @@ const { generateDependencyReport, VoiceConnectionStatus } = require('@discordjs/
 const { Player } = require('discord-player');
 const { applyToEachCommand } = require('@utils');
 const { reloadCommands } = require('@utils/reloadCommands');
-const PochitaEmbed = require('@classes/PochitaEmbed');
+const PochitaEmbed = require('@classes/TrackCard/PochitaEmbed');
 const DeezerExtractor = require('discord-player-deezer').default;
 
 const client = new Client({
