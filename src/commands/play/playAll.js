@@ -1,5 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { establishVCConnection } = require('@utils/voice');
+const {useQueue} = require('discord-player');
+const useResume = require('@hooks/useResume');
 const connectToDB = require('@scripts/dbconnect');
 const Track = require('@db/models/track');
 
@@ -15,9 +17,8 @@ module.exports = {
 		}
 
 		await connectToDB();
-
 		await interaction.deferReply();
-
+		
 		for await (const doc of Track.find()) {
 			await client.player.play(interaction.member.voice.channel, doc.URL, {
 				nodeOptions: {
@@ -26,7 +27,9 @@ module.exports = {
 				}
 			});
 		}
+		const queue = useQueue(interaction.guild.id);
 
-		await interaction.followUp('Play all tracks');
+		queue.setMetadata(interaction);
+		useResume(interaction.guild.id);
 	},
 };

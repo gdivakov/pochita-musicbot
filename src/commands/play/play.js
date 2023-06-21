@@ -1,11 +1,10 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { establishVCConnection } = require('@utils/voice');
-const { prepareSongTitle } = require('@utils/formatString');
+const useResume = require('@hooks/useResume');
 const { QueryType } = require('discord-player');
-const SUPPORTED_PLATFORMS = require('@consts/platforms');
-const { useQueue } = require('discord-player');
+// const SUPPORTED_PLATFORMS = require('@consts/platforms');
 
-const PREFFERED_SEARCH_PLATFORM = SUPPORTED_PLATFORMS.YOUTUBE;
+// const PREFFERED_SEARCH_PLATFORM = SUPPORTED_PLATFORMS.YOUTUBE;
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -39,7 +38,7 @@ module.exports = {
 			return;
 		}
 
-		const { track, queue } = await client.player.play(channel, searchResult, options);
+		const { queue } = await client.player.play(channel, searchResult, options);
 
 		// PlayerStart event is responsible for handling reply
 		queue.setMetadata(interaction);
@@ -52,5 +51,6 @@ module.exports = {
 			// and play it
 			queue.node.skip();
 		}
+		useResume(interaction.guild.id);
 	}
-}
+};
