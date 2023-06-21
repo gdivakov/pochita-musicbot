@@ -1,8 +1,8 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { establishVCConnection } = require('@utils/voice');
-const useResume = require('@hooks/useResume');
 const { QueryType } = require('discord-player');
 // const SUPPORTED_PLATFORMS = require('@consts/platforms');
+const useMoveToStart = require('@hooks/useMoveToStart');
 
 // const PREFFERED_SEARCH_PLATFORM = SUPPORTED_PLATFORMS.YOUTUBE;
 
@@ -43,14 +43,11 @@ module.exports = {
 		// PlayerStart event is responsible for handling reply
 		queue.setMetadata(interaction);
 
-		// In case we have queue ahead:
-		if (queue.tracks.data.length) {
-			// move track to start position
-			queue.node.move(queue.tracks.data.length - 1, 0);
-
-			// and play it
-			queue.node.skip();
-		}
-		useResume(interaction.guild.id);
+		// Move all received tracks to start of the queue
+		useMoveToStart({
+			from: queue.tracks.data.length - 1,
+			num: 1,
+			guildId: interaction.guild.id,
+		});
 	}
 };

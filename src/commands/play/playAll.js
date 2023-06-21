@@ -1,9 +1,10 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { establishVCConnection } = require('@utils/voice');
-const {useQueue} = require('discord-player');
+const { useQueue } = require('discord-player');
 const useResume = require('@hooks/useResume');
 const connectToDB = require('@scripts/dbconnect');
 const Track = require('@db/models/track');
+const useMoveToStart = require('@hooks/useMoveToStart');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -18,8 +19,16 @@ module.exports = {
 
 		await connectToDB();
 		await interaction.deferReply();
-		
-		for await (const doc of Track.find()) {
+
+		const guildId = interaction.guild.id;
+		let queue = useQueue(guildId);
+
+		const allTracks = await Track.find();
+
+		// If currentTrack !== null we must skip it
+		const withSkip = queue && queue.currentTrack;
+
+		for await (const doc of allTracks) {
 			await client.player.play(interaction.member.voice.channel, doc.URL, {
 				nodeOptions: {
 					leaveOnEnd: false,
@@ -27,9 +36,24 @@ module.exports = {
 				}
 			});
 		}
-		const queue = useQueue(interaction.guild.id);
+
+		// No need to perform further actions if we don't have queue
+		if (!queue)
+		{
+			return;
+		}
 
 		queue.setMetadata(interaction);
-		useResume(interaction.guild.id);
+
+		// Move all received tracks to start of the queue
+		useMoveToStart({
+			from: queue.tracks.data.length - allTracks.length,
+			num: allTracks.length,
+			guildId,
+			withSkip
+		});
+
+		// Resume is case of paused
+		useResume(guildId);
 	},
 };
