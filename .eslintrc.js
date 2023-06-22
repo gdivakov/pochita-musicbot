@@ -23,7 +23,7 @@ module.exports = {
 	},
 	'rules': {
 		'no-process-env': 'off',
-    	'no-process-exit': 'off',
+		'no-process-exit': 'off',
 		'indent': [
 			'error',
 			'tab'
