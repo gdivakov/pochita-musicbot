@@ -7,6 +7,7 @@ module.exports = {
 		.setName('list')
 		.setDescription('Get a list of songs from the current queue'),
 	async execute({ client, interaction }) {
+
 		const queue = client.player.queues.get(interaction.guildId);
 
 		if(!queue) {

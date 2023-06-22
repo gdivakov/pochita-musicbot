@@ -21,7 +21,7 @@ module.exports = {
 		await interaction.deferReply();
 
 		const guildId = interaction.guild.id;
-		let queue = useQueue(guildId);
+		const queue = useQueue(guildId);
 		const db = useDatabase();
 
 		const allTracks = await db.getAllTracks();

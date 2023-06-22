@@ -2,6 +2,7 @@ require('module-alias/register');
 require('dotenv').config();
 const mongoose = require('mongoose');
 const Track = require('@db/models/track');
+const Playlist = require('@db/models/playlist');
 
 const {
     MONGO_DB_USERNAME,
@@ -37,16 +38,14 @@ class Database {
 
     // Get
     async getAllTracks() {
-        await this.connect()
-
         const allTracks = await Track.find();
 
-        await this.disconnect();
         return allTracks;
     }
 
-    getAllPlaylists() {
-
+    async getPlaylists() {
+        const allPlaylists = await Playlist.find();
+        return allPlaylists;
     }
 
     getTracksByPlaylist() {
@@ -54,8 +53,17 @@ class Database {
     }
 
     // Save
-    saveToPlaylist() {
+    saveTrack({ URL, title, playlist }) {
 
+        // URL
+        // title
+        // thumbnailURL
+        // playlistId
+
+        // console.log('URL, title, playlist: ', URL, title, playlist);
+		// const track = new Track({ title, URL, playlistId });
+
+		// await track.save();
     }
 
     createPlaylist() {
@@ -77,5 +85,6 @@ class Database {
 }
 
 const db = new Database();
+db.connect();
 
 module.exports = db;

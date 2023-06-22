@@ -8,7 +8,7 @@ const { getErrorMessage } = require('@utils/message');
 module.exports = {
 	name: Events.InteractionCreate,
 	async execute(interaction) {
-		if (!interaction.isChatInputCommand()) {
+		if (!interaction.isChatInputCommand() && !interaction.isAutocomplete()) {
 			return;
 		}
 
@@ -20,6 +20,11 @@ module.exports = {
 		}
 
 		try {
+			if (interaction.isAutocomplete())
+			{
+				return await command.autocomplete({ client: interaction.client, interaction });
+			}
+
 			await command.execute({ client: interaction.client, interaction });
 		} catch (error) {
 			console.error('InteractionCreate::Execute', error);
