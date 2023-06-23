@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
 
 const trackSchema = new mongoose.Schema({
+	playlistId: String,
 	title: String,
 	URL: String,
-	length: Number,
+	thumbnailURL: String,
 	author: String,
 });
 

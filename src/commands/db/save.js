@@ -1,5 +1,4 @@
 const { SlashCommandBuilder } = require('discord.js');
-const Track = require('@db/models/track');
 const useDatabase = require('@hooks/useDatabase');
 const { useQueue } = require('discord-player');
 
@@ -16,25 +15,28 @@ module.exports = {
 		const focusedValue = interaction.options.getFocused();
 		const db = useDatabase();
 
-		const choices = await db.getPlaylists().map(({ title } => title));
-		const filtered = choices.filter(choice => choice.startsWith(focusedValue));
+		const choices = await db.getPlaylists();
+		const filtered = choices.filter(choice => choice.title.startsWith(focusedValue));
 
 		await interaction.respond(
-			filtered.map(choice => ({ name: choice, value: choice })),
+			filtered.map(({ title, id }) => ({ name: title, value: id })),
 		);
 	},
 	async execute({ interaction }) {
 		const db = useDatabase();
 		const queue = useQueue(interaction.guild.id);
+		const selectedPlaylistId = interaction.options.getString('playlist');
 
 		if (!queue || !queue.currentTrack) {
 			return await interaction.reply('No active track found');
 		}
 
-		db.saveTrack(queue.currentTrack)
-		// const { url: URL, title }
+		if (!selectedPlaylistId)
+		{
+			return await interaction.reply('No playlist selected');
+		}
 
-		// db.saveTrack({ URL, title, playlist });
+		await db.saveTrack(queue.currentTrack, selectedPlaylistId);
 
 		await interaction.reply('Track saved');
 	},
