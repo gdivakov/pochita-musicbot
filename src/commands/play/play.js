@@ -34,8 +34,7 @@ module.exports = {
 		const searchResult = await client.player.search(trackQuery, { requestedBy: interaction.user, searchEngine });
 
 		if (!searchResult.hasTracks()) {
-			await interaction.editReply(`We found no tracks for ${trackQuery}!`);
-			return;
+			return await interaction.editReply(`We found no tracks for ${trackQuery}!`);
 		}
 
 		const { queue } = await client.player.play(channel, searchResult, options);

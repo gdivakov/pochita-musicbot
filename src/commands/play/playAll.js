@@ -2,8 +2,6 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const { establishVCConnection } = require('@utils/voice');
 const { useQueue } = require('discord-player');
 const useResume = require('@hooks/useResume');
-const connectToDB = require('@scripts/dbconnect');
-const Track = require('@db/models/track');
 const useMoveToStart = require('@hooks/useMoveToStart');
 const useDatabase = require('@hooks/useDatabase');
 
@@ -21,7 +19,7 @@ module.exports = {
 		await interaction.deferReply();
 
 		const guildId = interaction.guild.id;
-		let queue = useQueue(guildId);
+		const queue = useQueue(guildId);
 		const db = useDatabase();
 
 		const allTracks = await db.getAllTracks();

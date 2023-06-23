@@ -2,13 +2,13 @@
 
 const { Events } = require('discord.js');
 const ENVIRONMENT_CONSTS = require('@consts/env');
-const MESSAGES_CONSTS = require('@consts/message');
+const { ERROR_MESSAGE } = require('@consts/message');
 const { getErrorMessage } = require('@utils/message');
 
 module.exports = {
 	name: Events.InteractionCreate,
 	async execute(interaction) {
-		if (!interaction.isChatInputCommand()) {
+		if (!interaction.isChatInputCommand() && !interaction.isAutocomplete()) {
 			return;
 		}
 
@@ -20,13 +20,18 @@ module.exports = {
 		}
 
 		try {
+			if (interaction.isAutocomplete())
+			{
+				return await command.autocomplete({ client: interaction.client, interaction });
+			}
+
 			await command.execute({ client: interaction.client, interaction });
 		} catch (error) {
 			console.error('InteractionCreate::Execute', error);
 
 			// Show full error in case of development
 			const content = process.env.ENVIRONMENT == ENVIRONMENT_CONSTS.DEVELOPMENT ?
-				getErrorMessage(error.stack) : MESSAGES_CONSTS.COMMAND_ERROR_MESSAGE;
+				getErrorMessage(error.stack) : ERROR_MESSAGE.COMMAND.DEFAULT_MESSAGE;
 
 			if (interaction.replied || interaction.deferred) {
 				await interaction.followUp({ content, ephemeral: true });

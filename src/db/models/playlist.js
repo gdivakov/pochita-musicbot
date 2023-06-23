@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const playlistSchema = new mongoose.Schema({
-	title: String,
+	title: { type: String, required: true, unique: true },
 	author: String,
 	trackCount: Number,
 	length: Number,
