@@ -22,7 +22,7 @@ module.exports = {
 		const filtered = choices.filter(choice => choice.title.startsWith(focusedValue));
 
 		await interaction.respond(
-			filtered.map(({ title, id }) => ({ name: title, value: id })),
+			filtered.map(({ title }) => ({ name: title, value: title })),
 		);
 	},
 	async execute({ client, interaction }) {
@@ -33,9 +33,9 @@ module.exports = {
 			return await interaction.reply(connectionState.reason);
 		}
 
-		const selectedPlaylistId = interaction.options.getString('playlist');
+		const selectedPlaylistTitle = interaction.options.getString('playlist');
 
-		if (!selectedPlaylistId) {
+		if (!selectedPlaylistTitle) {
 			return await interaction.reply('No playlist selected');
 		}
 
@@ -45,7 +45,7 @@ module.exports = {
 		const queue = useQueue(guildId);
 		const db = useDatabase();
 
-		const playlistTracks = await db.getPlaylistTracks(selectedPlaylistId);
+		const playlistTracks = await db.getPlaylistTracks(selectedPlaylistTitle);
 
 		// If currentTrack !== null we must skip it
 		const withSkip = queue && queue.currentTrack;

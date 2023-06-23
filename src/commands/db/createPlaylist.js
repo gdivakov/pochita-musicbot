@@ -1,22 +1,24 @@
 const { SlashCommandBuilder } = require('discord.js');
-const Playlist = require('@db/models/playlist');
-const connectToDB = require('@scripts/dbconnect');
+const useDatabase = require('@hooks/useDatabase');
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('create-playlist')
-		.setDescription('Creates a new Playlist!')
+		.setDescription('Create a new playlist')
 		.addStringOption(option =>
 			option.setName('title')
-				.setDescription('Title')
-				.setAutocomplete(true)),
+				.setDescription('New playlist title')),
 	async execute({ interaction }) {
-		await connectToDB();
-
+		const db = useDatabase();
 		const title = interaction.options.getString('title', true);
-		const playlist = new Playlist({ title });
 
-		await playlist.save();
+		const { status, errorMessage } = await db.createPlaylist(title);
+
+		if (!status)
+		{
+			return await interaction.reply(errorMessage);
+		}
+
 		await interaction.reply('Playlist created');
 	},
 };

@@ -19,24 +19,24 @@ module.exports = {
 		const filtered = choices.filter(choice => choice.title.startsWith(focusedValue));
 
 		await interaction.respond(
-			filtered.map(({ title, id }) => ({ name: title, value: id })),
+			filtered.map(({ title }) => ({ name: title, value: title })),
 		);
 	},
 	async execute({ interaction }) {
 		const db = useDatabase();
 		const queue = useQueue(interaction.guild.id);
-		const selectedPlaylistId = interaction.options.getString('playlist');
+		const selectedPlaylistTitle = interaction.options.getString('playlist');
 
 		if (!queue || !queue.currentTrack) {
 			return await interaction.reply('No active track found');
 		}
 
-		if (!selectedPlaylistId)
+		if (!selectedPlaylistTitle)
 		{
 			return await interaction.reply('No playlist selected');
 		}
 
-		await db.saveTrack(queue.currentTrack, selectedPlaylistId);
+		await db.saveTrack(queue.currentTrack, selectedPlaylistTitle);
 
 		await interaction.reply('Track saved');
 	},

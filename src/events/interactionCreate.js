@@ -2,7 +2,7 @@
 
 const { Events } = require('discord.js');
 const ENVIRONMENT_CONSTS = require('@consts/env');
-const MESSAGES_CONSTS = require('@consts/message');
+const { ERROR_MESSAGE } = require('@consts/message');
 const { getErrorMessage } = require('@utils/message');
 
 module.exports = {
@@ -31,7 +31,7 @@ module.exports = {
 
 			// Show full error in case of development
 			const content = process.env.ENVIRONMENT == ENVIRONMENT_CONSTS.DEVELOPMENT ?
-				getErrorMessage(error.stack) : MESSAGES_CONSTS.COMMAND_ERROR_MESSAGE;
+				getErrorMessage(error.stack) : ERROR_MESSAGE.COMMAND.DEFAULT_MESSAGE;
 
 			if (interaction.replied || interaction.deferred) {
 				await interaction.followUp({ content, ephemeral: true });

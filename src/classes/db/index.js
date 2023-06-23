@@ -1,8 +1,10 @@
 require('module-alias/register');
 require('dotenv').config();
 const mongoose = require('mongoose');
+const { ERROR_MESSAGE } = require('@consts/message');
 const Track = require('@db/models/track');
 const Playlist = require('@db/models/playlist');
+const { databaseProxyHandler, DBError } = require('@classes/db/utils');
 
 const {
 	MONGO_DB_USERNAME,
@@ -48,8 +50,8 @@ class Database {
 		return allPlaylists;
 	}
 
-	async getPlaylistTracks(playlistId) {
-		const playlistTracks = await Track.find({ playlistId });
+	async getPlaylistTracks(selectedPlaylistTitle) {
+		const playlistTracks = await Track.find({ playlistTitle: selectedPlaylistTitle });
 		return playlistTracks;
 	}
 
@@ -58,19 +60,24 @@ class Database {
 	}
 
 	// Save
-	async saveTrack(track, playlistId) {
-
-		console.log('track', track);
-		console.log('playlist', playlistId);
+	async saveTrack(track, playlistTitle) {
 		const { url: URL, title, thumbnail: thumbnailURL, author } = track;
 
-		const trackToSave = new Track({ title, URL, thumbnailURL, playlistId, author });
+		const trackToSave = new Track({ title, URL, thumbnailURL, playlistTitle, author });
 
 		await trackToSave.save();
 	}
 
-	createPlaylist() {
+	async createPlaylist(playlistTitle) {
+		const playlist = new Playlist({ title: playlistTitle });
 
+		try {
+			await playlist.save();
+		} catch (error) {
+			if (error.code === 11000 && error.keyPattern && error.keyPattern.title) {
+				return { status: false, errorMessage: ERROR_MESSAGE.PLAYLIST.CREATE.UNIQUE_TITLE };
+			}
+		}
 	}
 
 	deleteFromPlaylist() {
@@ -87,7 +94,9 @@ class Database {
 
 }
 
-const db = new Database();
-db.connect();
 
-module.exports = db;
+const DBProxy = new Proxy(new Database(), databaseProxyHandler);
+
+DBProxy.connect();
+
+module.exports = DBProxy;
