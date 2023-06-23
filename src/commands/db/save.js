@@ -36,7 +36,12 @@ module.exports = {
 			return await interaction.reply('No playlist selected');
 		}
 
-		await db.saveTrack(queue.currentTrack, selectedPlaylistTitle);
+		const { status, errorMessage } = await db.saveTrack(queue.currentTrack, selectedPlaylistTitle);
+
+		if (!status)
+		{
+			return await interaction.reply(errorMessage);
+		}
 
 		await interaction.reply('Track saved');
 	},

@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const { ERROR_MESSAGE } = require('@consts/message');
 const Track = require('@db/models/track');
 const Playlist = require('@db/models/playlist');
-const { databaseProxyHandler, DBError } = require('@classes/db/utils');
+const { databaseProxyHandler, initDBErrorHandler } = require('@classes/db/utils');
 
 const {
 	MONGO_DB_USERNAME,
@@ -96,6 +96,8 @@ class Database {
 
 
 const DBProxy = new Proxy(new Database(), databaseProxyHandler);
+
+initDBErrorHandler();
 
 DBProxy.connect();
 

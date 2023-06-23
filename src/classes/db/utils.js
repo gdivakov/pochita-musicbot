@@ -1,14 +1,7 @@
 const { ERROR_MESSAGE } = require('@consts/message');
+const mongoose = require('mongoose');
 
-// DB handled error
-class DBError extends Error {
-	constructor(message, code) {
-		super(message);
-		this.name = 'DBError';
-		this.code = code;
-	}
-}
-
+// Handle unhandled errors and return response
 const databaseProxyHandler = {
 	get: function (target, prop) {
 		// Intercept function calls
@@ -33,18 +26,25 @@ const databaseProxyHandler = {
 	},
 };
 
+const initDBErrorHandler = () => {
+	mongoose.connection.on('error', (error) => {
+		console.error('Error while connecting to MongoDB:', error);
+		mongoose.connection.close();
+	});
+
+	process.on('uncaughtException', (error) => {
+		console.error('uncaughtException:', error);
+		mongoose.connection.close(() => {
+			process.exit(1);
+		});
+	});
+
+	process.on('exit', () => {
+		mongoose.connection.close();
+	});
+}
 
 module.exports = {
 	databaseProxyHandler,
-	DBError
+	initDBErrorHandler,
 };
-
-// } catch (error) {
-//     if (error.code === 11000 && error.keyPattern && error.keyPattern.title) {
-//         return { status: false, errorMessage: ERROR_MESSAGE.PLAYLIST.CREATE.UNIQUE_TITLE };
-//     }
-
-//     return { status: false, errorMessage: ERROR_MESSAGE.COMMAND.DEFAULT_MESSAGE };
-// }
-
-return { status: true, errorMessage: null };
