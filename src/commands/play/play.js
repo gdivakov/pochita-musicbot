@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { establishVCConnection } = require('@utils/voice');
 const { QueryType } = require('discord-player');
+const useUnloop = require('@hooks/useUnloop');
 // const SUPPORTED_PLATFORMS = require('@consts/platforms');
 const useMoveToStart = require('@hooks/useMoveToStart');
 
@@ -16,6 +17,7 @@ module.exports = {
 				.setRequired(true)),
 	async execute({ client, interaction }) {
 
+		
 		const connectionState = establishVCConnection(interaction);
 
 		if (!connectionState.status) {
@@ -27,7 +29,8 @@ module.exports = {
 		const channel = interaction.member.voice.channel;
 
 		await interaction.deferReply();
-
+		useUnloop(interaction.guild.id);
+		
 		const isDirectURL = trackQuery.indexOf('https://') === 0;
 		const searchEngine = isDirectURL ? QueryType.AUTO : QueryType.YOUTUBE_SEARCH;
 
