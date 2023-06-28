@@ -3,7 +3,7 @@ const { establishVCConnection } = require('@utils/voice');
 const { QueryType } = require('discord-player');
 // const SUPPORTED_PLATFORMS = require('@consts/platforms');
 const useMoveToStart = require('@hooks/useMoveToStart');
-
+const useResume = require('@hooks/useResume');
 // const PREFFERED_SEARCH_PLATFORM = SUPPORTED_PLATFORMS.YOUTUBE;
 
 module.exports = {
@@ -41,6 +41,9 @@ module.exports = {
 
 		// PlayerStart event is responsible for handling reply
 		queue.setMetadata(interaction);
+
+		//Unpause if pauseMode is true
+		useResume(interaction.guild.id);
 
 		// Move all received tracks to start of the queue
 		useMoveToStart({
