@@ -7,7 +7,8 @@ const ERROR_MESSAGE = {
 			UNIQUE_TITLE: 'Title must be unique'
 		},
 		DELETE: {
-			TRACK_NOT_FOUND: 'Track is not found in the playlist'
+			TRACK_NOT_FOUND: 'Track is not found in the playlist',
+			NO_PLAYLIST: 'Playlist not found'
 		}
 	}
 };

@@ -77,6 +77,16 @@ class Database {
 	}
 
 	// Delete
+	async deletePlaylist(playlistTitle) {
+		const result = await Playlist.deleteOne({
+			title: playlistTitle
+		});
+
+		if (!result.deletedCount) {
+			return { status: false, errorMessage: ERROR_MESSAGE.PLAYLIST.DELETE.NO_PLAYLIST}
+		}
+	}
+
 	async deleteFromPlaylist(track, playlistTitle) {
 		const result = await Track.deleteOne({
 			playlistTitle,
