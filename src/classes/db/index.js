@@ -85,6 +85,11 @@ class Database {
 		if (!result.deletedCount) {
 			return { status: false, errorMessage: ERROR_MESSAGE.PLAYLIST.DELETE.NO_PLAYLIST}
 		}
+
+		await Track.deleteMany({
+			playlistTitle
+		})
+
 	}
 
 	async deleteFromPlaylist(track, playlistTitle) {
