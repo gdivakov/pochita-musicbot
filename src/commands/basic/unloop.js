@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { useQueue } = require('discord-player');
+const useUnloop = require('@hooks/useUnloop');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -12,7 +13,7 @@ module.exports = {
 			return await interaction.reply('There is no track playing');
 		}
 
-		queue.setRepeatMode(0);
+		useUnloop(interaction.guild.id);
 
 		await interaction.reply('Track was unlooped');
 	}
