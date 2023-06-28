@@ -1,6 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { establishVCConnection } = require('@utils/voice');
-const useMoveToStart = require('@hooks/useMoveToStart');
 const useDatabase = require('@hooks/useDatabase');
 const { useQueue } = require('discord-player');
 const useResume = require('@hooks/useResume');
