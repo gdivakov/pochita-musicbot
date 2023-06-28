@@ -64,4 +64,30 @@ module.exports = [
 			);
 		}
 	},
+	// Reverbnation
+	{
+		validateSource: source => source == SUPPORTED_PLATFORMS.REVERBNATION.toLowerCase(),
+		setRawFields: ({ track: { raw: { duration, views, author, url}, queryType, thumbnail}, embed }) => {
+
+			embed.setAuthor({ name: author, iconURL: thumbnail, url: url });
+			embed.addFields(
+				{ name: 'Duration:', value: duration.toString(), inline: true },
+				{ name: 'Source:', value: queryType, inline: true }
+			);
+		}
+	},
+	// Apple Music
+	{
+		validateSource: source => source == SUPPORTED_PLATFORMS.APPLE_MUSIC.toLowerCase(),
+		setRawFields: ({track: {raw: {duration, url, author, source}, thumbnail}, embed}) => {
+
+			embed.setAuthor({name: author, iconURL: thumbnail, url: url});
+			embed.addFields(
+				{ name: 'Duration:', value:duration.toString(), inline: true},
+				{ name: 'Source:', value: source.toString(), inline:true}
+				
+			)
+		}
+	},
+	// Vimeo
 ];
