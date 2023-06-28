@@ -8,7 +8,7 @@ module.exports = {
     async execute({ client, interaction }) {
         const db = useDatabase();
         let playlist = Object.values(await db.getPlaylists());
-        let list = playlist.map(({ title }) => title).join('\n');
+        let list = '- ' + playlist.map(({ title }) => title).join('\n- ');
 
         await interaction.reply(list);
     },

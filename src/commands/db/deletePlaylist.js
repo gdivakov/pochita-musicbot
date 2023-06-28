@@ -3,7 +3,7 @@ const useDatabase = require('@hooks/useDatabase');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('playlist-delete')
+        .setName('delete-playlist')
         .setDescription('Delete playlist')
         .addStringOption(option =>
             option.setName('title')
