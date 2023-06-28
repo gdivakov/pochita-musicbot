@@ -1,46 +1,58 @@
-const { SlashCommandBuilder } = require("@discordjs/builders")
+const { SlashCommandBuilder } = require('@discordjs/builders');
 const { establishVCConnection } = require('@utils/voice');
+const { QueryType } = require('discord-player');
+const useUnloop = require('@hooks/useUnloop');
+// const SUPPORTED_PLATFORMS = require('@consts/platforms');
+const useMoveToStart = require('@hooks/useMoveToStart');
+const useResume = require('@hooks/useResume');
+// const PREFFERED_SEARCH_PLATFORM = SUPPORTED_PLATFORMS.YOUTUBE;
 
-// play [url] - Move song from url to the beggining of the queue and play it
 module.exports = {
-    data: new SlashCommandBuilder()
-        .setName('play')
-        .setDescription('Play track from URL, queue moves ahead')
-        .addStringOption(option =>
-            option.setName('url')
-            .setDescription('track URL')
-            .setRequired(true)),
-    async execute({ client, interaction }) {
+	data: new SlashCommandBuilder()
+		.setName('play')
+		.setDescription('Play track by query: direct URL or search string. Queue moves ahead')
+		.addStringOption(option =>
+			option.setName('query')
+				.setDescription('Track URL or search string')
+				.setRequired(true)),
+	async execute({ client, interaction }) {
 
-        const connectionState = establishVCConnection(interaction);
+		
+		const connectionState = establishVCConnection(interaction);
 
-        if (!connectionState.status)
-        {
-            return await interaction.reply(connectionState.reason);;
-        };
+		if (!connectionState.status) {
+			return await interaction.reply(connectionState.reason);
+		}
 
-        try {
-            await interaction.deferReply();
+		const options = { nodeOptions: { leaveOnEnd: false, metadata: interaction } };
+		const trackQuery = interaction.options.getString('query');
+		const channel = interaction.member.voice.channel;
 
-            const options = { nodeOptions: { leaveOnEnd: false, metadata: interaction } }
-            const trackURL = interaction.options.getString('url');
-            const channel = interaction.member.voice.channel;
+		await interaction.deferReply();
+		useUnloop(interaction.guild.id);
+		
+		const isDirectURL = trackQuery.indexOf('https://') === 0;
+		const searchEngine = isDirectURL ? QueryType.AUTO : QueryType.YOUTUBE_SEARCH;
 
-            const { track, queue } = await client.player.play(channel, trackURL, options);
+		const searchResult = await client.player.search(trackQuery, { requestedBy: interaction.user, searchEngine });
 
-            // In case we have queue ahead
-            if (queue.tracks.data.length) {
-                // move track to start position
-                queue.node.move(queue.tracks.data.length - 1, 0);
+		if (!searchResult.hasTracks()) {
+			return await interaction.editReply(`We found no tracks for ${trackQuery}!`);
+		}
 
-                // and play it
-                queue.node.skip();
-            }
+		const { queue } = await client.player.play(channel, searchResult, options);
 
-            return interaction.followUp(`Started a new track`);
+		// PlayerStart event is responsible for handling reply
+		queue.setMetadata(interaction);
 
-        } catch (e) {
-            return interaction.followUp(`Something went wrong: ${e}`);
-        }
-    },
-}
+		//Unpause if pauseMode is true
+		useResume(interaction.guild.id);
+
+		// Move all received tracks to start of the queue
+		useMoveToStart({
+			from: queue.tracks.data.length - 1,
+			num: 1,
+			guildId: interaction.guild.id,
+		});
+	}
+};

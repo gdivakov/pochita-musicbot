@@ -1,23 +1,23 @@
-const { SlashCommandBuilder } = require("@discordjs/builders");
-const { useHistory } = require("discord-player");
-
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const { useHistory, useQueue } = require('discord-player');
+const useResume = require('@hooks/useResume');
 module.exports = {
-    data: new SlashCommandBuilder()
-        .setName("prev")
-        .setDescription("Previous track"),
-    async execute({ client, interaction }) {
-        try {
-            const history = useHistory(interaction.guild.id);
+	data: new SlashCommandBuilder()
+		.setName('prev')
+		.setDescription('Previous track'),
+	async execute({ interaction }) {
+		const history = useHistory(interaction.guild.id);
+		const queue = useQueue(interaction.guild.id);
 
-            if (!history || !history.tracks.data.length) {
-                await interaction.reply("There are no previous tracks in the queue");
-                return;
-            }
+		if (!history || !history.tracks.data.length) {
+			return await interaction.reply('There are no previous tracks in the queue');
+		}
 
-            await history.previous();
-            await interaction.reply('Start playing previous track')
-        } catch (e) {
-            interaction.reply("previous error ", e)
-        }
-    }
-}
+		// Defer reply as PlayerStart event is responsible for handling that
+		await interaction.deferReply();
+		queue.setMetadata(interaction);
+
+		await history.previous();
+		useResume(interaction.guild.id);
+	}
+};

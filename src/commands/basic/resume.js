@@ -1,24 +1,19 @@
-const { SlashCommandBuilder } = require("@discordjs/builders");
-const { useQueue } = require("discord-player");
-
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const { useQueue } = require('discord-player');
+const useResume = require('@hooks/useResume');
 module.exports = {
-    data: new SlashCommandBuilder()
-        .setName("resume")
-        .setDescription("Resume a track"),
-    async execute({ client, interaction }) {
-        try {
-            const queue = useQueue(interaction.guild.id);
+	data: new SlashCommandBuilder()
+		.setName('resume')
+		.setDescription('Resume a track'),
+	async execute({ interaction }) {
+		const queue = useQueue(interaction.guild.id);
 
-            if (!queue) {
-                await interaction.reply('There is no track playing');
-                return;
-            };
+		if (!queue) {
+			return await interaction.reply('There is no track playing');
+		}
 
-            queue.node.setPaused(false);
-            await interaction.reply("Track was resumed!");
-
-        } catch (e) {
-            return interaction.reply("Resume error: ", e)
-        }
-    }
-}
+		useResume(interaction.guild.id);
+		
+		await interaction.reply('Track was resumed');
+	}
+};
