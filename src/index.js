@@ -9,7 +9,6 @@ const { applyToEachCommand } = require('@utils');
 const { reloadCommands } = require('@utils/reloadCommands');
 const PochitaEmbed = require('@classes/TrackCard/PochitaEmbed');
 const DeezerExtractor = require('discord-player-deezer').default;
-
 const client = new Client({
 	intents: [
 		GatewayIntentBits.Guilds,
@@ -74,7 +73,6 @@ async function InitPlayer() {
 	client.player.extractors.register(DeezerExtractor);
 
 	await client.player.extractors.loadDefault();
-
 	client.player.events.on('playerStart', async ({ metadata }, track) => {
 		try {
 			const embed = new PochitaEmbed(track).prepareSongStartedEmbed();
