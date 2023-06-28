@@ -17,6 +17,7 @@ const databaseProxyHandler = {
 			try {
 				response = await originalFunction.apply(target, args);
 			} catch (error) {
+				console.log('unexpected error while working w/ db: ', error);
 				return { status: false, errorMessage: ERROR_MESSAGE.COMMAND.DEFAULT_MESSAGE };
 			}
 

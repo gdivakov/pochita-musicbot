@@ -55,10 +55,6 @@ class Database {
 		return playlistTracks;
 	}
 
-	getTracksByPlaylist() {
-
-	}
-
 	// Save
 	async saveTrack(track, playlistTitle) {
 		const { url: URL, title, thumbnail: thumbnailURL, author } = track;
@@ -80,8 +76,16 @@ class Database {
 		}
 	}
 
-	deleteFromPlaylist() {
+	// Delete
+	async deleteFromPlaylist(track, playlistTitle) {
+		const result = await Track.deleteOne({
+			playlistTitle,
+			title: track.title,
+		});
 
+		if (!result.deletedCount) {
+			return { status: false, errorMessage: ERROR_MESSAGE.PLAYLIST.DELETE.TRACK_NOT_FOUND }
+		}
 	}
 
 	editTrackMetadata() {
@@ -97,7 +101,7 @@ class Database {
 
 const DBProxy = new Proxy(new Database(), databaseProxyHandler);
 
-initDBErrorHandler();
+// initDBErrorHandler();
 
 DBProxy.connect();
 

@@ -5,6 +5,9 @@ const ERROR_MESSAGE = {
 	PLAYLIST: {
 		CREATE: {
 			UNIQUE_TITLE: 'Title must be unique'
+		},
+		DELETE: {
+			TRACK_NOT_FOUND: 'Track is not found in the playlist'
 		}
 	}
 };
