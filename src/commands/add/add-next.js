@@ -34,6 +34,6 @@ module.exports = {
 			withSkip:false
 		});
 
-		await interaction.followUp(`${prepareSongTitle(track)} added as the next song`);
+		await interaction.followUp(`${prepareSongTitle(track)} added as the new song`);
 	},
 };
