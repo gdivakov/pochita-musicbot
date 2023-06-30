@@ -12,7 +12,7 @@ module.exports = {
 			return await interaction.reply('Bot isn`t in voice channel');
 		}
 
-        queue.clear();
+        queue.tracks.clear();
 		await interaction.reply('Queue was cleared');
 	}
 };
