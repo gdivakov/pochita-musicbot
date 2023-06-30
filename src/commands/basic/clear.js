@@ -9,7 +9,7 @@ module.exports = {
         const queue = useQueue(interaction.guildId);
         
         if (!queue) {
-			return await interaction.reply('Bot isn`t in voice channel');
+			return await interaction.reply('Bot isn`t in the voice channel');
 		}
 
         queue.clear();
