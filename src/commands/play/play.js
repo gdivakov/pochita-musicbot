@@ -1,12 +1,11 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { establishVCConnection } = require('@utils/voice');
-const { QueryType } = require('discord-player');
+const { SEARCH_TYPES } = require('@consts/search');
 const usePlatform = require('@hooks/usePlatform');
 const useUnloop = require('@hooks/useUnloop');
-// const SUPPORTED_PLATFORMS = require('@consts/platforms');
 const useMoveToStart = require('@hooks/useMoveToStart');
 const useResume = require('@hooks/useResume');
-// const PREFFERED_SEARCH_PLATFORM = SUPPORTED_PLATFORMS.YOUTUBE;
+const { QueryType } = require('discord-player');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -19,8 +18,7 @@ module.exports = {
 	async execute({ client, interaction }) {
 
 		const [getCurrentPlatform] = usePlatform();
-		console.log(getCurrentPlatform())
-		
+
 		const connectionState = establishVCConnection(interaction);
 
 		if (!connectionState.status) {
@@ -33,9 +31,9 @@ module.exports = {
 
 		await interaction.deferReply();
 		useUnloop(interaction.guild.id);
-		
+
 		const isDirectURL = trackQuery.indexOf('https://') === 0;
-		const searchEngine = isDirectURL ? QueryType.AUTO : QueryType[getCurrentPlatform()];
+		const searchEngine = isDirectURL ? QueryType.AUTO : getCurrentPlatform();
 
 		const searchResult = await client.player.search(trackQuery, { requestedBy: interaction.user, searchEngine });
 

@@ -1,28 +1,33 @@
 const usePlatform = require('@hooks/usePlatform');
-const [getCurrentPlatforms, getSupportedPlatforms, setPlatform] = usePlatform();
+const [ , setPlatform ] = usePlatform();
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const platform_list = getSupportedPlatforms();
+const { SEARCH_TYPES } = require('@consts/search')
+const SUPPORTED_PLATFORMS = require('@consts/platforms')
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('set-platform')
-        .setDescription('What platform you want choose ?')
+        .setDescription('Select platform you want to choose for searching')
         .addStringOption(option =>
-            option.setName('name')
+            option.setName('platform')
                 .setDescription('Platform name')
                 .setAutocomplete(true)),
     async autocomplete({ interaction }) {
-        
-        await interaction.respond(
-           platform_list.map( title => ({ name: title, value: title }))
-        );
+
+        const options = Object.entries(SEARCH_TYPES).map(([key, value]) => ({ value, name: SUPPORTED_PLATFORMS[key] }));
+
+        await interaction.respond(options);
     },
     async execute({ interaction }) {
-        const platformQuery = interaction.options.getString('name');
+        const platform = interaction.options.getString('platform');
 
-        if (!setPlatform(platformQuery)) {
-            return await interaction.reply('This platform isn`t support')
+        if (!Object.values(SEARCH_TYPES).includes(platform))
+        {
+            return await interaction.reply(`Platform isn't supported`);
         }
 
-        await interaction.reply(`Great, you did choose ${platformQuery} platform`);
+        setPlatform(platform)
+
+        await interaction.reply(`Search platform changed`);
     }
 };
