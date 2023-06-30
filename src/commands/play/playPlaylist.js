@@ -52,8 +52,8 @@ module.exports = {
 
 		// Clear before playing next playlist
 		if (queue)
-		{
-			queue.clear();
+		{	
+			queue.tracks.clear();
 		}
 
 		for await (const doc of playlistTracks) {
