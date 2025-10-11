@@ -1,0 +1,37 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      // Local debugging
+      "type": "node",
+      "request": "launch",
+      "name": "ArchieNailsBot debug",
+      "runtimeExecutable": "nodemon",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceFolder}/src/index.js",
+      "console": "integratedTerminal",
+      "runtimeArgs": [
+        "--inspect=9229"
+      ],
+      "restart": true,
+      "env": {
+        "NODE_ENV": "development"
+      }
+    },
+    // {
+    //   "type": "node",
+    //   "request": "attach",
+    //   "name": "ArchieNailsBot debug [Attach to Docker Node.js]",
+    //   "address": "localhost",
+    //   "port": 9229,
+    //   "localRoot": "${workspaceFolder}",
+    //   "remoteRoot": "/app",
+    //   "skipFiles": [
+    //     "<node_internals>/**"
+    //   ],
+    //   "restart": true
+    // }
+  ]
+}

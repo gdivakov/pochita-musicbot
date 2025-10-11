@@ -14,9 +14,9 @@
   "license": "ISC",
   "dependencies": {
     "@discord-player/extractor": "^4.2.2",
-    "@discordjs/opus": "^0.9.0",
+    "@discordjs/opus": "^0.10.0",
     "@discordjs/voice": "^0.16.0",
-    "@distube/ytdl-core": "^4.11.10",
+    "@distube/ytdl-core": "^4.16.12",
     "discord-player": "^6.3.1",
     "discord-player-deezer": "^0.0.8",
     "discord.js": "^14.11.0",
@@ -35,11 +35,10 @@
     "@scripts": "src/scripts",
     "@utils": "src/utils",
     "@classes": "src/classes",
-    "@hooks" : "src/hooks"
-    
+    "@hooks": "src/hooks"
   },
   "devDependencies": {
     "eslint": "^8.43.0",
-    "nodemon": "^2.0.22"
+    "nodemon": "^3.1.10"
   }
 }
